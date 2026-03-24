@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Colegio NWL</title>
+    <style>
+        :root {
+            --color-fondo: #f8f9fa;
+            --color-primario: #701321;
+            --color-primario-light: #8e1a2a;
+            --color-oro: #b38e1d;
+            --color-oro-brillante: #d4af37;
+            --texto-oscuro: #2d0a0a;
+            --texto-claro: #ffffff;
+            --sombra-suave: 0 8px 20px rgba(0, 0, 0, 0.1);
+            --sombra-fuerte: 0 12px 30px rgba(112, 19, 33, 0.2);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: radial-gradient(circle at center, #ffffff 0%, #f0f0f0 100%);
+            color: var(--texto-oscuro);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 45px;
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            letter-spacing: 3px;
+            color: var(--color-primario);
+            text-transform: uppercase;
+            border-bottom: 3px solid var(--color-oro);
+            padding-bottom: 12px;
+            display: inline-block;
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 25px;
+            width: 100%;
+            max-width: 1000px;
+            justify-content: center;
+        }
+
+        .tarjeta {
+            text-decoration: none;
+            background: var(--color-primario);
+            color: var(--color-oro-brillante);
+            padding: 40px 25px;
+            border-radius: 24px;
+            text-align: center;
+            font-weight: 600;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid transparent;
+            box-shadow: var(--sombra-suave);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .tarjeta::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0) 100%);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .tarjeta:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--sombra-fuerte);
+            background: var(--color-primario-light);
+            border-color: var(--color-oro-brillante);
+            color: #ffffff;
+        }
+
+        .tarjeta:hover::before {
+            opacity: 1;
+        }
+
+        .alerta-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: var(--color-oro-brillante);
+            color: var(--color-primario);
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+            100% { transform: scale(1); }
+        }
+
+        .icono-svg {
+            width: 56px;
+            height: 56px;
+            margin-bottom: 18px;
+            fill: currentColor;
+            transition: transform 0.3s ease;
+        }
+
+        .tarjeta:hover .icono-svg {
+            transform: scale(1.15);
+        }
+
+        .label {
+            font-size: 1.2rem;
+            line-height: 1.2;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(4px);
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            border-top: 5px solid var(--color-primario);
+            transform: scale(0.8);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-title {
+            color: var(--color-primario);
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .modal-text {
+            color: #555;
+            font-size: 1.1rem;
+            margin-bottom: 25px;
+            line-height: 1.4;
+        }
+
+        .modal-btn {
+            background: var(--color-primario);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .modal-btn:hover {
+            background: var(--color-primario-light);
+        }
+
+        @media (max-width: 600px) {
+            .menu-grid {
+                grid-template-columns: 1fr;
+                max-width: 320px;
+            }
+            .header h1 {
+                font-size: 1.6rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <h1>Colegio NWL</h1>
+    </header>
+
+    <div class="menu-grid">
+        <!-- Flujo CRM -->
+        <a href="https://app.gohighlevel.com/v2/preview/lY2CxoQEJgP6HZxUJn2W" class="tarjeta" target="_blank">
+            <svg class="icono-svg" viewBox="0 0 24 24">
+                <path d="M22 11V3h-7v3H9V3H2v8h7V8h2v10h4v3h7v-8h-7v3h-2V8h2v3z"/>
+            </svg>
+            <span class="label">Flujo CRM</span>
+        </a>
+
+        <!-- Manual Admisiones -->
+        <a href="https://app.gohighlevel.com/v2/preview/oJsfJzp0x5FDCuLKhD9Y" class="tarjeta" target="_blank">
+            <svg class="icono-svg" viewBox="0 0 24 24">
+                <path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 4h5v8l-2.5-1.5L6 12V4z"/>
+            </svg>
+            <span class="label">Manual Admisiones</span>
+        </a>
+
+        <!-- Actualizaciones del CRM -->
+        <div class="tarjeta" onclick="abrirAvisoCRM()">
+            <div class="alerta-badge">!</div>
+            <svg class="icono-svg" viewBox="0 0 24 24">
+                <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
+            </svg>
+            <span class="label">Actualizaciones CRM</span>
+        </div>
+
+        <!-- B.E Newland (Icono de Certificado) -->
+        <a href="https://app.gohighlevel.com/v2/preview/yx7W0rvXSsa8RO9gxFA6" class="tarjeta" target="_blank">
+            <svg class="icono-svg" viewBox="0 0 24 24">
+                <path d="M20 2H4c-1.11 0-2 .89-2 2v11c0 1.11.89 2 2 2h4v5l4-2 4 2v-5h4c1.11 0 2-.89 2-2V4c0-1.11-.89-2-2-2zm0 13H4V4h16v11z"/>
+            </svg>
+            <span class="label">B.E Newland</span>
+        </a>
+    </div>
+
+    <div id="modalAviso" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-title">Aviso Importante</div>
+            <div class="modal-text">Para cualquier ajuste o modificación en el sistema, por favor reportarlos en el chat del <strong>CRM Altura</strong>.</div>
+            <button class="modal-btn" onclick="continuarALink()">Entendido</button>
+        </div>
+    </div>
+
+    <script>
+        const urlGoogleSheets = "https://docs.google.com/spreadsheets/d/13N7kdOpnlsWi2ZbmtEkRSbUl9iE6wcqauSfP73ppwYw/edit?usp=sharing";
+
+        function abrirAvisoCRM() {
+            document.getElementById('modalAviso').classList.add('active');
+        }
+
+        function continuarALink() {
+            document.getElementById('modalAviso').classList.remove('active');
+            window.open(urlGoogleSheets, '_blank');
+        }
+
+        document.getElementById('modalAviso').addEventListener('click', function(e) {
+            if (e.target === this) {
+                this.classList.remove('active');
+            }
+        });
+    </script>
+
+</body>
+</html>
