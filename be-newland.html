@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manual B.E. Newland — CAP</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        .menu-toggle { display: none; background-color: var(--burgundy); color: var(--white); border: none; padding: 0.8rem 1.5rem; font-size: 1rem; font-weight: 600; cursor: pointer; border-radius: 4px; margin: 0 auto; }
+        .menu-toggle:hover { background-color: #5a1529; }
+        :root { --burgundy: #7C1F3D; --gold: #D4AF37; --dark-text: #2C2C2C; --light-bg: #F8F6F3; --white: #FFFFFF; --light-gold: #F4E4C1; --border-gray: #E0E0E0; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: var(--dark-text); background-color: var(--light-bg); }
+        header { background: linear-gradient(135deg, var(--burgundy) 0%, #5a1529 100%); color: var(--white); padding: 2rem 0; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        header h1 { font-size: 2.5rem; margin-bottom: 0.5rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
+        header .subtitle { font-size: 1.2rem; color: var(--gold); font-weight: 600; }
+        header .tagline { font-size: 0.9rem; margin-top: 0.5rem; opacity: 0.9; }
+        nav { background-color: var(--white); padding: 1rem 0; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        nav ul { list-style: none; display: flex; justify-content: center; flex-wrap: wrap; max-width: 1400px; margin: 0 auto; padding: 0 1rem; }
+        nav li { margin: 0.5rem 1rem; }
+        nav a { color: var(--burgundy); text-decoration: none; font-weight: 600; font-size: 0.9rem; transition: color 0.3s; }
+        nav a:hover { color: var(--gold); }
+        .container { max-width: 1200px; margin: 0 auto; padding: 2rem 1rem; }
+        section { background-color: var(--white); margin-bottom: 2rem; padding: 2rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        section h2 { color: var(--burgundy); font-size: 2rem; margin-bottom: 1.5rem; padding-bottom: 0.5rem; border-bottom: 3px solid var(--gold); }
+        section h3 { color: var(--burgundy); font-size: 1.5rem; margin-top: 2rem; margin-bottom: 1rem; }
+        section h4 { color: var(--dark-text); font-size: 1.2rem; margin-top: 1.5rem; margin-bottom: 0.8rem; }
+        .alert { padding: 1.5rem; margin: 1.5rem 0; border-radius: 8px; border-left: 5px solid; }
+        .alert-warning { background-color: #FFF3CD; border-color: #FFC107; color: #856404; }
+        .alert-success { background-color: #D4EDDA; border-color: #28A745; color: #155724; }
+        .alert-danger { background-color: #F8D7DA; border-color: #DC3545; color: #721C24; }
+        .alert-info { background-color: var(--light-gold); border-color: var(--gold); color: var(--dark-text); }
+        .alert strong { display: block; font-size: 1.1rem; margin-bottom: 0.5rem; }
+        table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; background-color: var(--white); }
+        th { background-color: var(--burgundy); color: var(--white); padding: 1rem; text-align: left; font-weight: 600; }
+        td { padding: 1rem; border-bottom: 1px solid var(--border-gray); }
+        tr:hover { background-color: var(--light-bg); }
+        ul, ol { margin: 1rem 0 1rem 2rem; }
+        li { margin: 0.5rem 0; }
+        .highlight-box { background: linear-gradient(135deg, var(--burgundy) 0%, #5a1529 100%); color: var(--white); padding: 2rem; border-radius: 8px; margin: 2rem 0; text-align: center; }
+        .highlight-box h3 { color: var(--gold); font-size: 2rem; margin-bottom: 1rem; }
+        .highlight-box p { font-size: 1.1rem; line-height: 1.8; }
+        .logo-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 2rem; margin: 2rem 0; }
+        .logo-item { text-align: center; }
+        .logo-item img { max-width: 150px; height: auto; }
+        .process-steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin: 2rem 0; }
+        .step { background-color: var(--light-bg); padding: 1.5rem; border-radius: 8px; border-top: 4px solid var(--gold); }
+        .step-number { background-color: var(--burgundy); color: var(--gold); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; font-weight: bold; margin-bottom: 1rem; }
+        .step h4 { color: var(--burgundy); margin-top: 0; }
+        .faq-item { background-color: var(--light-bg); padding: 1.5rem; margin: 1rem 0; border-radius: 8px; border-left: 4px solid var(--gold); }
+        .faq-question { color: var(--burgundy); font-weight: 600; font-size: 1.1rem; margin-bottom: 0.8rem; }
+        .faq-answer { color: var(--dark-text); line-height: 1.8; }
+        .word-comparison { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin: 2rem 0; }
+        .prohibited { background-color: #F8D7DA; padding: 1.5rem; border-radius: 8px; border: 2px solid #DC3545; }
+        .allowed { background-color: #D4EDDA; padding: 1.5rem; border-radius: 8px; border: 2px solid #28A745; }
+        .word-comparison h4 { margin-top: 0; text-align: center; }
+        .word-comparison ul { list-style: none; margin-left: 0; }
+        .word-comparison li { padding: 0.5rem; margin: 0.5rem 0; background-color: var(--white); border-radius: 4px; }
+        .prohibited li::before { content: "❌ "; margin-right: 0.5rem; }
+        .allowed li::before { content: "✅ "; margin-right: 0.5rem; }
+        footer { background-color: var(--burgundy); color: var(--white); text-align: center; padding: 2rem; margin-top: 3rem; }
+        footer p { margin: 0.5rem 0; }
+        @media (max-width: 768px) {
+            .menu-toggle { display: block; }
+            nav ul { display: none; flex-direction: column; align-items: center; }
+            nav ul.show { display: flex; }
+            header h1 { font-size: 1.8rem; }
+            nav li { margin: 0.3rem 0; }
+            .word-comparison { grid-template-columns: 1fr; }
+            section { padding: 1.5rem; }
+            table { font-size: 0.9rem; }
+            th, td { padding: 0.8rem 0.5rem; }
+        }
+        @media print {
+            nav { display: none; }
+            section { page-break-inside: avoid; box-shadow: none; }
+            .alert { border: 1px solid #000; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Manual B.E. Newland</h1>
+        <div class="subtitle">Beyond Excellence</div>
+        <div class="tagline">Guía Operativa para el Equipo CAP (Centro de Atención a Padres)</div>
+    </header>
+
+    <nav>
+        <button class="menu-toggle" onclick="toggleMenu()">☰ Menú</button>
+        <ul id="nav-menu">
+            <li><a href="#introduccion" onclick="closeMenu()">Introducción</a></li>
+            <li><a href="#mecanica" onclick="closeMenu()">Mecánica</a></li>
+            <li><a href="#golden-ticket" onclick="closeMenu()">Golden Ticket</a></li>
+            <li><a href="#beneficios" onclick="closeMenu()">Beneficios</a></li>
+            <li><a href="#elegibilidad" onclick="closeMenu()">Elegibilidad</a></li>
+            <li><a href="#crm" onclick="closeMenu()">Registro CRM</a></li>
+            <li><a href="#lenguaje" onclick="closeMenu()">Lenguaje</a></li>
+            <li><a href="#territorio" onclick="closeMenu()">Territorio</a></li>
+            <li><a href="#faq" onclick="closeMenu()">FAQ</a></li>
+            <li><a href="#terminos" onclick="closeMenu()">Términos</a></li>
+        </ul>
+    </nav>
+
+    <script>
+        function toggleMenu() {
+            const menu = document.getElementById('nav-menu');
+            menu.classList.toggle('show');
+        }
+        function closeMenu() {
+            const menu = document.getElementById('nav-menu');
+            if (window.innerWidth <= 768) menu.classList.remove('show');
+        }
+        document.addEventListener('click', function(event) {
+            const nav = document.querySelector('nav');
+            const menu = document.getElementById('nav-menu');
+            if (!nav.contains(event.target) && window.innerWidth <= 768) menu.classList.remove('show');
+        });
+    </script>
+
+    <div class="container">
+
+        <!-- SECCIÓN 1: INTRODUCCIÓN -->
+        <section id="introduccion">
+            <h2>1. Bienvenida e Introducción</h2>
+            <div class="highlight-box">
+                <h3>¿Qué es el Programa B.E. Newland?</h3>
+                <p><strong>B.E. NEWLAND</strong> es un programa de reconocimiento vitalicio diseñado para familias de excelencia que elevan el estándar de nuestra comunidad educativa.</p>
+                <p style="margin-top: 1rem; font-size: 1.3rem; color: var(--gold);">B = Beyond | E = Excellence</p>
+                <div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid rgba(212,175,55,0.3);">
+                    <img src="https://storage.googleapis.com/msgsndr/mBBe0eYA8ipK5V9Icpq1/media/69961420f02fa40a225ef9ca.png" alt="The British Endowment for Educational Excellence" style="max-width: 160px; height: auto; margin-bottom: 1rem;">
+                    <p style="font-size: 0.95rem; line-height: 1.7; max-width: 700px; margin: 0 auto; opacity: 0.95;">Respaldado por <strong style="color: var(--gold);">The British Endowment for Educational Excellence</strong>, un fondo de inversión educativo con sede en Londres, Reino Unido.</p>
+                    <p style="margin-top: 0.8rem; font-size: 0.8rem; opacity: 0.7; font-style: italic;">Fostering Knowledge, Building Futures — London, UK</p>
+                </div>
+            </div>
+            <h3>Tu Rol como CAP</h3>
+            <p>Como miembro del Centro de Atención a Padres, tú eres la pieza clave en el éxito de esta campaña. El programa B.E. no es solo un beneficio económico — es una herramienta estratégica de cierre que reconoce familias extraordinarias.</p>
+            <div class="alert alert-info">
+                <strong>🎯 Tu Objetivo Principal:</strong>
+                Utilizar el programa B.E. como herramienta de cierre para familias que cumplen con nuestro perfil de excelencia, creando una experiencia de exclusividad y pertenencia desde el primer contacto.
+            </div>
+            <h3>Visión General del Sistema</h3>
+            <p>El programa B.E. Newland funciona en dos niveles:</p>
+            <div class="process-steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h4>Familia Referida</h4>
+                    <p>Recibe <strong>30% de Reconocimiento Vitalicio</strong> en colegiatura mientras su hijo permanezca inscrito en Newland.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h4>Familia Embajadora</h4>
+                    <p>Recibe <strong>10% de Bonificación</strong> por cada familia que refiera e inscriba. Acumulable hasta <strong>100%</strong>.</p>
+                </div>
+            </div>
+            <div class="logo-grid" style="justify-items: center;">
+                <div class="logo-item">
+                    <img src="https://storage.googleapis.com/msgsndr/mBBe0eYA8ipK5V9Icpq1/media/6994c352d614c926a700b87b.png" alt="B.E. Newland Seal" style="max-width: 200px; height: auto;">
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 2: MECÁNICA -->
+        <section id="mecanica">
+            <h2>2. Mecánica del Programa</h2>
+            <h3>Diagrama de Flujo</h3>
+            <img src="https://storage.googleapis.com/msgsndr/mBBe0eYA8ipK5V9Icpq1/media/6994c7f13a96e53faf1fbb52.png" alt="Diagrama de Flujo B.E. Newland" style="width: 100%; max-width: 800px; height: auto; display: block; margin: 2rem auto; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
+            <h3>Vías de Acceso al Programa</h3>
+            <div class="process-steps">
+                <div class="step">
+                    <div class="step-number">A</div>
+                    <h4>Vía Referencia</h4>
+                    <p>Familia es nominada por una familia NWL activa (Golden Ticket digital, mención verbal o referencia verificable).</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">B</div>
+                    <h4>Vía CAP Discrecional</h4>
+                    <p>CAP puede otorgar acceso si evalúa que la familia cumple el perfil B.E., incluso sin referencia formal.</p>
+                </div>
+            </div>
+            <div class="alert alert-warning">
+                <strong>⚠️ Protocolo Importante:</strong>
+                Siempre preguntar primero si la familia tiene una referencia de alguna familia Newland. Si no la tienen, puedes otorgar el programa a discreción basándote en tu evaluación del perfil familiar.
+            </div>
+            <h3>Flujo de Validación</h3>
+            <ol>
+                <li><strong>Contacto Inicial:</strong> Familia llega por referencia o como prospecto walk-in</li>
+                <li><strong>Consideración de otorgar el programa B.E.:</strong> Durante la visita a campus o proceso de admisión</li>
+                <li><strong>Confirmación de Elegibilidad:</strong> CAP determina si califican para B.E.</li>
+                <li><strong>Presentación del Programa:</strong> Se comunica el Reconocimiento del 30%</li>
+                <li><strong>Inscripción:</strong> Familia completa el proceso</li>
+                <li><strong>Registro en CRM:</strong> Se agregan los tags correspondientes</li>
+            </ol>
+        </section>
+
+        <!-- SECCIÓN: GOLDEN TICKET CAP -->
+        <section id="golden-ticket">
+            <h2>Generador de Golden Ticket — Equipo CAP</h2>
+            <p>Como parte del equipo CAP, puedes generar <strong>Golden Tickets personalizados</strong> para entregar a las familias que califican para el programa B.E. Newland.</p>
+            <h3>¿Cómo Funciona?</h3>
+            <div class="process-steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h4>Selecciona tu Campus</h4>
+                    <p>Elige el campus desde el cual estás generando la invitación: Milenio, Corregidora o San Miguel de Allende.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h4>Ingresa la Familia</h4>
+                    <p>Escribe el apellido de la familia que deseas invitar al programa B.E. Newland.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h4>Genera y Comparte</h4>
+                    <p>Haz clic en "Generar Golden Ticket". Podrás descargarlo como imagen o compartirlo directamente por WhatsApp.</p>
+                </div>
+            </div>
+            <div class="alert alert-info">
+                <strong>📋 ¿Qué aparece en el ticket?</strong>
+                <p style="margin-top: 0.5rem;">El Golden Ticket generado por CAP muestra <strong>"Equipo CAP"</strong> como emisor de la invitación, junto con el nombre de la familia invitada, el campus de destino y el reconocimiento vitalicio del 30%.</p>
+            </div>
+            <h3>Accede al Generador</h3>
+            <div style="text-align: center; margin: 2rem 0;">
+                <a href="https://www.nwl.mx/cap_golden_ticket" target="_blank" style="display: inline-block; padding: 1rem 2.5rem; background: linear-gradient(135deg, var(--burgundy) 0%, #5a1529 100%); color: var(--white); text-decoration: none; font-size: 1.2rem; font-weight: 700; border-radius: 8px; box-shadow: 0 4px 15px rgba(124, 31, 61, 0.3);">🎫 Generar Golden Ticket</a>
+            </div>
+            <div class="alert alert-warning">
+                <strong>⚠️ Recuerda:</strong>
+                <ul style="margin-top: 0.5rem; margin-left: 1rem;">
+                    <li>Genera el ticket <strong>únicamente para familias que califican</strong> para el programa B.E.</li>
+                    <li>Después de entregar el Golden Ticket, no olvides <strong>registrar el tag correspondiente en el CRM</strong>.</li>
+                </ul>
+            </div>
+            <h3>Sube el Golden Ticket al CRM (ALTURA / GoHighLevel)</h3>
+            <div class="process-steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h4>Busca al Contacto</h4>
+                    <p>En GoHighLevel, ve a <strong>Contacts</strong> y busca al padre/madre de la familia.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h4>Abre el Contacto</h4>
+                    <p>Haz clic en el contacto para abrir su perfil.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h4>Sube el Archivo</h4>
+                    <p>Busca el campo <strong>File Upload</strong> del Golden Ticket y selecciona la imagen generada.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <h4>Guarda y Confirma</h4>
+                    <p>Asegúrate de que el archivo se haya cargado correctamente y guarda los cambios.</p>
+                </div>
+            </div>
+            <div class="alert alert-danger">
+                <strong>🚨 Importante:</strong>
+                <p style="margin-top: 0.5rem;">No omitas este paso. Subir el Golden Ticket al CRM es esencial para que el equipo de admisiones y dirección puedan verificar qué familias recibieron la invitación.</p>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 3: BENEFICIOS -->
+        <section id="beneficios">
+            <h2>3. Beneficios Explicados en Detalle</h2>
+            <div class="highlight-box">
+                <h3>30% Reconocimiento Vitalicio</h3>
+                <p>Para Familias de Nuevo Ingreso (Referidas)</p>
+            </div>
+            <h3>Características del 30% Reconocimiento</h3>
+            <table>
+                <tr><th>Aspecto</th><th>Detalle</th></tr>
+                <tr><td><strong>¿Qué es?</strong></td><td>Un reconocimiento del 30% en el monto de colegiatura mensual</td></tr>
+                <tr><td><strong>Vigencia</strong></td><td>VITALICIO — aplica mientras el alumno permanezca inscrito en NWL</td></tr>
+                <tr><td><strong>¿Cuándo aplica?</strong></td><td>Desde la primera colegiatura hasta que el alumno termine su trayectoria en Newland</td></tr>
+                <tr><td><strong>¿Se pierde?</strong></td><td>Solo si el alumno se da de baja de Newland</td></tr>
+                <tr><td><strong>Si la familia embajadora se va</strong></td><td>El referido CONSERVA su 30%. No se pierde el beneficio.</td></tr>
+                <tr><td><strong>Acumulable con otras promos</strong></td><td>NO acumulable con ninguna otra promoción vigente</td></tr>
+            </table>
+            <div class="alert alert-success">
+                <strong>✅ Mensaje Clave para Familias:</strong>
+                "Este no es un descuento temporal. Es nuestro compromiso vitalicio con familias extraordinarias."
+            </div>
+            <div class="highlight-box" style="margin-top: 3rem;">
+                <h3>10% Bonificación Acumulable</h3>
+                <p>Para Familias Embajadoras (Actuales)</p>
+            </div>
+            <h3>Características del 10% Bonificación</h3>
+            <table>
+                <tr><th>Aspecto</th><th>Detalle</th></tr>
+                <tr><td><strong>¿Qué es?</strong></td><td>Un 10% de bonificación en la colegiatura propia por cada familia que refieran e inscriban</td></tr>
+                <tr><td><strong>Acumulación</strong></td><td>Hasta 100% de bonificación total (10 referidos = colegiatura cubierta al 100%)</td></tr>
+                <tr><td><strong>Vigencia</strong></td><td>Activo mientras cada familia referida permanezca inscrita</td></tr>
+                <tr><td><strong>¿Se pierde?</strong></td><td>Sí, si la familia referida se da de baja, el embajador pierde ese 10% específico</td></tr>
+                <tr><td><strong>Ejemplo</strong></td><td>Si refiero 3 familias que se inscriben = 30% de bonificación. Si una se va, regreso a 20%.</td></tr>
+            </table>
+        </section>
+
+        <!-- SECCIÓN 4: ELEGIBILIDAD -->
+        <section id="elegibilidad">
+            <h2>4. Proceso de Elegibilidad y Validación</h2>
+            <h3>¿Cómo Saber si una Familia Califica para B.E.?</h3>
+            <div class="process-steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h4>Alineación de Valores</h4>
+                    <p>La familia muestra interés genuino en excelencia académica, bilingüismo y desarrollo integral del alumno.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h4>Compromiso Familiar</h4>
+                    <p>El padre, madre o responsable está involucrado en el proceso de admisión y muestra compromiso activo.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h4>Actitud y Respeto</h4>
+                    <p>La familia muestra respeto, cortesía y valoración por la propuesta educativa de Newland.</p>
+                </div>
+            </div>
+            <div class="alert alert-warning">
+                <strong>Protocolo de Evaluación:</strong>
+                <ol style="margin-top: 1rem; margin-left: 1rem;">
+                    <li><strong>Preguntar siempre primero:</strong> "¿Conocen a alguna familia actualmente en Newland que los haya recomendado?"</li>
+                    <li><strong>Si tienen referencia:</strong> Proceder directamente al programa B.E.</li>
+                    <li><strong>Si NO tienen referencia:</strong> Evaluar el perfil durante la visita/cita y otorgar a discreción.</li>
+                </ol>
+            </div>
+            <h3>Escenarios de Comunicación CAP</h3>
+            <h4>📌 Escenario 1: Familia Referida (con Golden Ticket o mención)</h4>
+            <div class="faq-item">
+                <div class="faq-question">Guion Sugerido:</div>
+                <div class="faq-answer">
+                    <p><em>"Bienvenidos a Newland. La familia [Apellido] decidió nominarlos para formar parte de nuestra comunidad... Una vez validado el perfil académico y de valores de su hijo, acceden a un <strong>Reconocimiento Vitalicio del 30% en colegiatura</strong>."</em></p>
+                    <p style="margin-top: 1rem;"><strong>Gatillos emocionales:</strong> Pertenencia · Exclusividad · Mérito</p>
+                </div>
+            </div>
+            <h4>📌 Escenario 2: Familia sin Referencia (walk-in / prospecto orgánico)</h4>
+            <div class="faq-item">
+                <div class="faq-question">Guion Sugerido:</div>
+                <div class="faq-answer">
+                    <p><em>"Quiero compartirles algo que considero va de acuerdo con el perfil de su familia. Tenemos el programa B.E. Newland — Beyond Excellence, reservado para familias que cumplen con nuestro perfil de excelencia..."</em></p>
+                </div>
+            </div>
+            <h4>📌 Escenario 3: Familia Indecisa (herramienta de cierre)</h4>
+            <div class="faq-item">
+                <div class="faq-question">Guion Sugerido:</div>
+                <div class="faq-answer">
+                    <p><em>"Antes de que tomen su decisión, quiero confirmarles algo importante: consideramos que su familia califica para el programa B.E. Newland... Eso significa que acceden a un <strong>Reconocimiento Vitalicio del 30% en colegiatura</strong>... Los espacios bajo este reconocimiento son limitados."</em></p>
+                    <p style="margin-top: 1rem;"><strong>Gatillos emocionales:</strong> Urgencia · Escasez · Validación</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 5: REGISTRO CRM -->
+        <section id="crm">
+            <h2>5. Registro en CRM (GoHighLevel / ALTURA)</h2>
+            <h3>Tags a Utilizar</h3>
+            <table>
+                <tr><th>Tag</th><th>¿Cuándo se usa?</th><th>Descripción</th></tr>
+                <tr><td><strong>BE_Referido</strong></td><td>Familia nueva que recibe el 30%</td><td>Se agrega al contacto en cuanto se les menciona o recibe el beneficio</td></tr>
+                <tr><td><strong>BE_Embajador1</strong></td><td>Familia actual que refirió a 1 familia</td><td>Se agrega solo cuando el referido ya está inscrito</td></tr>
+                <tr><td><strong>BE_Embajador2</strong></td><td>Familia actual que refirió a 2 familias</td><td>Se actualiza cuando el segundo referido ya está inscrito</td></tr>
+                <tr><td><strong>BE_Embajador3...</strong></td><td>Y así sucesivamente</td><td>El número representa cuántas familias han referido que ya están inscritas</td></tr>
+            </table>
+            <div class="alert alert-danger">
+                <strong>🚨 MUY IMPORTANTE:</strong>
+                El tag <strong>BE_Referido</strong> se agrega en cuanto la familia recibe o se menciona el beneficio. Los tags <strong>BE_Embajador</strong> se agregan ÚNICAMENTE después de que la familia referida está oficialmente inscrita.
+            </div>
+            <h4>Para Familias Referidas:</h4>
+            <ol>
+                <li>En cuanto CAP les comunica el beneficio del 30%</li>
+                <li>Ir a <strong>Contactos</strong> → Buscar o crear el contacto</li>
+                <li>Agregar el tag: <strong>BE_Referido</strong></li>
+                <li>Guardar cambios</li>
+            </ol>
+            <img src="https://storage.googleapis.com/msgsndr/mBBe0eYA8ipK5V9Icpq1/media/6994ca0c85759578aae3b1eb.png" alt="Captura GoHighLevel - Tag BE_Referido" style="width: 100%; max-width: 700px; height: auto; display: block; margin: 2rem auto; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); border: 2px solid var(--border-gray);">
+            <h4>Para Familias Embajadoras:</h4>
+            <ol>
+                <li>Una vez que la familia referida está inscrita</li>
+                <li>Ir a <strong>Contactos</strong> → Buscar el contacto de la familia embajadora</li>
+                <li>Agregar o actualizar el tag: <strong>BE_Embajador1, BE_Embajador2...</strong></li>
+                <li>Guardar cambios</li>
+            </ol>
+            <img src="https://storage.googleapis.com/msgsndr/mBBe0eYA8ipK5V9Icpq1/media/6994cad61ecd7105bf5d19ee.png" alt="Captura GoHighLevel - Tags BE_Embajador" style="width: 100%; max-width: 700px; height: auto; display: block; margin: 2rem auto; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); border: 2px solid var(--border-gray);">
+            <h3>Ejemplo Práctico</h3>
+            <div class="faq-item">
+                <div class="faq-question">Caso: Familia García refiere a Familia Martínez</div>
+                <div class="faq-answer">
+                    <p><strong>Paso 1:</strong> Familia Martínez viene a visita → Agregar tag <strong>BE_Referido</strong> inmediatamente</p>
+                    <p><strong>Paso 2:</strong> Familia Martínez se inscribe oficialmente</p>
+                    <p><strong>Paso 3:</strong> Ir al contacto de Familia García → Agregar tag <strong>BE_Embajador1</strong></p>
+                    <p><strong>Resultado:</strong> Familia Martínez recibe 30% Reconocimiento. Familia García recibe 10% Bonificación.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 6: LENGUAJE -->
+        <section id="lenguaje">
+            <h2>6. Lenguaje del Programa B.E.</h2>
+            <div class="alert alert-danger">
+                <strong>🚫 REGLA DE ORO:</strong>
+                NUNCA usamos la palabra <strong>"descuento"</strong> o <strong>"discount"</strong>. Siempre usamos <strong>"Reconocimiento"</strong> o <strong>"Recognition"</strong>.
+            </div>
+            <h3>Palabras Prohibidas vs. Permitidas</h3>
+            <div class="word-comparison">
+                <div class="prohibited">
+                    <h4>❌ PROHIBIDAS</h4>
+                    <ul>
+                        <li>Descuento</li><li>Discount</li><li>Promoción</li><li>Promo</li>
+                        <li>Oferta</li><li>Deal</li><li>Beca</li><li>Rebaja</li>
+                    </ul>
+                </div>
+                <div class="allowed">
+                    <h4>✅ PERMITIDAS</h4>
+                    <ul>
+                        <li>Reconocimiento</li><li>Recognition</li><li>Bonificación</li>
+                        <li>Programa B.E.</li><li>Beyond Excellence</li><li>Distinción</li>
+                        <li>Beneficio vitalicio</li><li>Compromiso vitalicio</li>
+                    </ul>
+                </div>
+            </div>
+            <h3>Lo Que SÍ Decimos vs. Lo Que NO Decimos</h3>
+            <table>
+                <tr><th>❌ NO Decir</th><th>✅ SÍ Decir</th></tr>
+                <tr><td>"Les voy a dar un 30% de descuento"</td><td>"Acceden a un Reconocimiento Vitalicio del 30%"</td></tr>
+                <tr><td>"Tenemos una promo especial"</td><td>"Califican para el programa B.E. — Beyond Excellence"</td></tr>
+                <tr><td>"Es una oferta por tiempo limitado"</td><td>"Es un compromiso vitalicio con espacios limitados"</td></tr>
+                <tr><td>"Les podemos aplicar una beca"</td><td>"Su familia cumple el perfil para nuestro programa de Reconocimiento"</td></tr>
+                <tr><td>"Hay descuento si traen amigos"</td><td>"Pueden nominar familias extraordinarias y recibir Bonificación acumulable"</td></tr>
+            </table>
+        </section>
+
+        <!-- SECCIÓN 7: TERRITORIO -->
+        <section id="territorio">
+            <h2>7. Aplicación Territorial del Programa</h2>
+            <div class="highlight-box">
+                <h3>Campus Elegibles</h3>
+                <p style="font-size: 1.4rem; margin-top: 1rem;">✓ San Miguel de Allende<br>✓ Corregidora<br>✓ Milenio</p>
+            </div>
+            <div class="alert alert-danger">
+                <strong>🚨 MUY IMPORTANTE:</strong>
+                El programa B.E. Newland aplica EXCLUSIVAMENTE en los campus de San Miguel de Allende, Corregidora y Milenio.
+            </div>
+            <div class="alert alert-success">
+                <strong>✅ Familias de Otros Campus PUEDEN SER EMBAJADORES:</strong>
+                Las familias de <strong>cualquier campus NWL</strong> SÍ pueden nominar y referir familias para los campus elegibles y recibir el <strong>10% de Bonificación</strong> acumulable.<br><br>
+                <strong>Ejemplo:</strong> Una familia de Juriquilla puede referir a una familia para Milenio → La familia referida recibe 30% en Milenio, y la familia de Juriquilla recibe 10% en su colegiatura de Juriquilla.
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">Guion para Familias Actuales de Otros Campus:</div>
+                <div class="faq-answer">
+                    <p><em>"¡Excelente noticia! Aunque el programa B.E. aplica exclusivamente en San Miguel de Allende, Corregidora y Milenio, ustedes SÍ pueden nominar familias para esos campus y recibir la Bonificación del 10% en su colegiatura aquí en [Campus Actual]."</em></p>
+                    <p style="margin-top: 1rem;"><em>"Cada familia que refieran y se inscriba en alguno de esos tres campus les suma un 10% acumulable, hasta llegar al 100% de bonificación en su colegiatura."</em></p>
+                </div>
+            </div>
+            <h3>Disclaimer Obligatorio</h3>
+            <div class="alert alert-warning">
+                <p><strong>Español:</strong> "Programa exclusivo para campus San Miguel de Allende, Corregidora y Milenio. Aplican restricciones. Sujeto a disponibilidad."</p>
+                <hr style="margin: 1rem 0; border: none; border-top: 1px solid rgba(0,0,0,0.1);">
+                <p><strong>English:</strong> "Exclusive to San Miguel de Allende, Corregidora &amp; Milenio campuses. Restrictions apply. Limited availability."</p>
+            </div>
+            <h3>Comunicación Interna Entre Campus</h3>
+            <ol>
+                <li>Explicar que el programa solo aplica en SMA, Corregidora y Milenio</li>
+                <li>Si la familia está abierta a considerar estos campus, canalizar al CAP correspondiente</li>
+                <li>Mantener la comunicación transparente y profesional</li>
+            </ol>
+        </section>
+
+        <!-- SECCIÓN 8: FAQ -->
+        <section id="faq">
+            <h2>8. Preguntas Frecuentes (FAQ)</h2>
+            <p style="margin-bottom: 2rem;">Estas son las preguntas más comunes que recibirás de las familias. Estudia las respuestas para estar preparado/a.</p>
+
+            <div class="faq-item">
+                <div class="faq-question">1. ¿El 30% es solo por un año o cuánto dura?</div>
+                <div class="faq-answer"><p><strong>Respuesta:</strong> "El 30% de Reconocimiento es vitalicio. Aplica durante toda la trayectoria académica de su hijo en Newland, no solo un año."</p></div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">2. ¿Puedo combinar el 30% con otras promociones o becas?</div>
+                <div class="faq-answer"><p><strong>Respuesta:</strong> "No, el programa B.E. no es acumulable con otras promociones vigentes. Sin embargo, el 30% de Reconocimiento Vitalicio es uno de los beneficios más significativos que ofrecemos."</p></div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">3. Si la familia que nos refirió se sale de Newland, ¿perdemos el 30%?</div>
+                <div class="faq-answer"><p><strong>Respuesta:</strong> "No. Una vez que su familia es aceptada en el programa B.E., el Reconocimiento del 30% es suyo de manera vitalicia, independientemente de lo que suceda con la familia que los nominó."</p></div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">4. Si nosotros nos salimos y luego regresamos, ¿recuperamos el 30%?</div>
+                <div class="faq-answer"><p><strong>Respuesta:</strong> "El Reconocimiento del 30% aplica mientras su hijo permanezca inscrito en Newland. Si se dan de baja, el beneficio se pierde. En caso de reinscripción futura, tendríamos que evaluar la elegibilidad nuevamente."</p></div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">5. ¿Aplica para todos los campus de Newland?</div>
+                <div class="faq-answer"><p><strong>Respuesta:</strong> "El programa B.E. Newland aplica exclusivamente en los campus de San Miguel de Allende, Corregidora y Milenio."</p></div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">6. ¿Cuántas familias puedo referir como embajador?</div>
+                <div class="faq-answer"><p><strong>Respuesta:</strong> "No hay límite. Cada familia que refiera e inscriba le suma un 10% de Bonificación. Puede acumular hasta el 100%."</p></div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">7. Si una de las familias que referí se sale, ¿qué pasa con mi bonificación?</div>
+                <div class="faq-answer"><p><strong>Respuesta:</strong> "Si una familia referida se da de baja, usted pierde ese 10% específico, pero mantiene las bonificaciones de las demás familias que siguen activas."</p></div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">8. ¿Hasta cuándo está disponible el programa B.E.?</div>
+                <div class="faq-answer"><p><strong>Respuesta:</strong> "El programa está activo hasta nuevo aviso y sujeto a disponibilidad de espacios. Por eso es importante tomar la decisión pronto."</p></div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">9. ¿Necesito demostrar algo para calificar al programa?</div>
+                <div class="faq-answer"><p><strong>Respuesta:</strong> "El programa B.E. evalúa el perfil integral de la familia — su alineación con nuestros valores de excelencia, compromiso familiar y el potencial académico del alumno."</p></div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">10. ¿El 30% aplica en inscripción y otros cargos?</div>
+                <div class="faq-answer"><p><strong>Respuesta:</strong> "El Reconocimiento del 30% aplica exclusivamente sobre el monto mensual de colegiatura. No aplica en inscripción, materiales, uniformes u otros cargos."</p></div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">11. Si tengo 3 hijos, ¿el 30% aplica para todos?</div>
+                <div class="faq-answer"><p><strong>Respuesta:</strong> "Sí, el Reconocimiento del 30% aplica para todos los alumnos de la familia que se inscriban bajo el programa B.E."</p></div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">12. ¿Puedo nominar a varias familias al mismo tiempo?</div>
+                <div class="faq-answer"><p><strong>Respuesta:</strong> "¡Absolutamente! Puede nominar a todas las familias que considere que cumplen con el perfil Beyond Excellence."</p></div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">13. ¿Qué pasa si no conozco a nadie en Newland pero me interesa el programa?</div>
+                <div class="faq-answer"><p><strong>Respuesta:</strong> "Nosotros podemos evaluar su perfil directamente y determinar si califican para el programa B.E. sin necesidad de una referencia formal."</p></div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">14. ¿Cómo sé si mi referido fue aceptado en el programa?</div>
+                <div class="faq-answer"><p><strong>Respuesta:</strong> "Una vez que la familia que usted nominó complete su inscripción, nosotros le notificaremos para confirmar que su Bonificación del 10% ha sido activada."</p></div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">15. ¿Puedo transferir mi reconocimiento a otra familia?</div>
+                <div class="faq-answer"><p><strong>Respuesta:</strong> "No, el Reconocimiento del 30% es personal e intransferible."</p></div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 9: TÉRMINOS -->
+        <section id="terminos">
+            <h2>9. Términos y Limitaciones — Referencia Rápida</h2>
+            <table>
+                <tr><th>Concepto</th><th>Condición</th></tr>
+                <tr><td><strong>Vigencia del 30%</strong></td><td>Vitalicio — aplica mientras el alumno referido permanezca inscrito</td></tr>
+                <tr><td><strong>Vigencia del 10% embajador</strong></td><td>Activo mientras la familia referida permanezca inscrita</td></tr>
+                <tr><td><strong>Baja del embajador</strong></td><td>El referido CONSERVA su 30% aun si la familia embajadora se da de baja</td></tr>
+                <tr><td><strong>Acumulabilidad embajador</strong></td><td>Sí. Cada referencia exitosa suma 10% adicional, hasta 100%</td></tr>
+                <tr><td><strong>Otras promociones</strong></td><td>NO acumulable con ninguna otra promoción vigente</td></tr>
+                <tr><td><strong>Campus válidos</strong></td><td>Exclusivamente San Miguel de Allende, Corregidora y Milenio</td></tr>
+                <tr><td><strong>Aplicación del 30%</strong></td><td>Solo sobre colegiatura mensual (no inscripción, materiales, uniformes)</td></tr>
+                <tr><td><strong>Múltiples hijos</strong></td><td>El 30% aplica para todos los alumnos de la familia inscritos bajo B.E.</td></tr>
+                <tr><td><strong>Transferibilidad</strong></td><td>No transferible. El reconocimiento es personal e intransferible</td></tr>
+                <tr><td><strong>Condición de pago</strong></td><td>El pago de colegiatura debe realizarse <strong>dentro de los primeros 10 días del mes</strong> para que el reconocimiento o bonificación aplique en ese periodo.</td></tr>
+                <tr><td><strong>Reinscripción</strong></td><td>Para continuar en el programa B.E., la reinscripción debe completarse <strong>a más tardar en el mes de febrero</strong>.</td></tr>
+                <tr><td><strong>Condición de pago del referido (embajadores)</strong></td><td>La Bonificación del 10% aplica <strong>únicamente si la familia referida se encuentra al corriente en sus pagos</strong>.</td></tr>
+            </table>
+            <div class="alert alert-danger">
+                <strong>🚨 Condición de Pago Puntual:</strong>
+                <p style="margin-top: 0.5rem;">Los beneficios del programa B.E. aplican <strong>únicamente cuando el pago de colegiatura se realiza dentro de los primeros 10 días del mes</strong>.</p>
+            </div>
+            <div class="alert alert-info">
+                <strong>📋 Leyenda Obligatoria en Comunicaciones:</strong>
+                <p style="margin-top: 1rem;"><strong>Español:</strong> "Exclusivo para campus San Miguel de Allende, Corregidora y Milenio. Aplican restricciones. Sujeto a disponibilidad."</p>
+                <p style="margin-top: 0.5rem;"><strong>English:</strong> "Exclusive to San Miguel de Allende, Corregidora &amp; Milenio campuses. Restrictions apply. Limited availability."</p>
+            </div>
+        </section>
+
+        <!-- CONTACTO -->
+        <section>
+            <h2>Contacto y Soporte</h2>
+            <p>Si tienes alguna duda operativa sobre el programa B.E. Newland que no esté cubierta en este manual, puedes contactar a:</p>
+            <div class="process-steps">
+                <div class="step">
+                    <h4>Director de Campus</h4>
+                    <p>Para validación de perfiles o situaciones especiales en tu campus.</p>
+                </div>
+                <div class="step">
+                    <h4>ALTURA</h4>
+                    <p>Para dudas sobre materiales de campaña, comunicación o branding del programa.</p>
+                </div>
+                <div class="step">
+                    <h4>Soporte CRM</h4>
+                    <p>Para asistencia técnica con GoHighLevel y manejo de tags.</p>
+                </div>
+            </div>
+            <div class="highlight-box">
+                <h3>Recuerda</h3>
+                <p style="font-size: 1.1rem; line-height: 1.8;">El programa B.E. Newland es más que un beneficio económico — es una herramienta de cierre estratégica. Úsalo con confianza, discreción y siempre manteniendo el tono de <strong>exclusividad y pertenencia</strong>.</p>
+                <p style="margin-top: 1.5rem; color: var(--gold); font-size: 1.3rem; font-weight: 600;">Beyond Excellence • Newland</p>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <p><strong>B.E. NEWLAND</strong> — Beyond Excellence</p>
+        <p>Manual CAP | Colegios Newland | 2025</p>
+        <p style="margin-top: 1rem; font-size: 0.9rem;">Este documento es de uso interno exclusivo para el equipo CAP de Newland.</p>
+    </footer>
+</body>
+</html>
