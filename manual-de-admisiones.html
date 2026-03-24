@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manual Operativo de Admisiones NWL</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; scroll-behavior: smooth; }
+        .sidebar { overflow-y: auto; background-color: #781712; }
+        .sidebar::-webkit-scrollbar { width: 5px; }
+        .sidebar::-webkit-scrollbar-thumb { background-color: #cbb097; border-radius: 3px; }
+        .sidebar::-webkit-scrollbar-track { background-color: #5c110d; }
+        .role-badge { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.2rem 0.6rem; border-radius: 6px; font-weight: 600; font-size: 0.7rem; letter-spacing: 0.025em; text-transform: uppercase; }
+        .role-nora { background-color: #e0e7ff; color: #3730a3; border: 1px solid #c7d2fe; }
+        .role-cap { background-color: #fce7f3; color: #9d174d; border: 1px solid #fbcfe8; }
+        .role-cai { background-color: #d1fae5; color: #065f46; border: 1px solid #a7f3d0; }
+        .role-caja { background-color: #ffedd5; color: #9a3412; border: 1px solid #fed7aa; }
+        .role-recepcion { background-color: #f3f4f6; color: #374151; border: 1px solid #e5e7eb; }
+        .stage-card { border-radius: 0.75rem; background: white; box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1); border: 1px solid #e2e8f0; margin-bottom: 1.5rem; overflow: hidden; transition: all 0.2s; }
+        details.stage-card > summary { list-style: none; cursor: pointer; }
+        details.stage-card > summary::-webkit-details-marker { display: none; }
+        details[open] .fa-chevron-down { transform: rotate(180deg); }
+        .fa-chevron-down { transition: transform 0.3s ease; }
+        .stage-header { padding: 1.25rem 1.5rem; border-bottom: 1px solid transparent; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; transition: background-color 0.2s; }
+        details[open] .stage-header { border-bottom-color: #f1f5f9; background-color: #f8fafc; }
+        .stage-body { padding: 1.5rem; animation: slideDown 0.3s ease-out; }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        .task-list li { margin-bottom: 0.5rem; display: flex; align-items: start; gap: 0.5rem; font-size: 0.9rem; color: #737373; }
+        .task-list i { margin-top: 0.2rem; }
+        .data-box { background-color: #f9fafb; border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; font-size: 0.85rem; }
+        .data-title { font-weight: 700; color: #737373; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; }
+        .chat-bubble { position: relative; background: #f1f5f9; border-radius: 1rem; padding: 1rem; font-size: 0.9rem; color: #737373; border-bottom-left-radius: 0; }
+        .text-deep-ember { color: #781712; }
+        .text-golden-spark { color: #fcb22f; }
+        .text-steel { color: #737373; }
+        .text-sand { color: #cbb097; }
+        .bg-deep-ember { background-color: #781712; }
+    </style>
+</head>
+<body class="text-steel">
+
+    <div class="md:hidden bg-[#781712] text-white p-4 sticky top-0 z-50 shadow-md flex justify-between items-center">
+        <h1 class="text-lg font-bold tracking-wide flex items-center">
+            <i class="fa-solid fa-school text-[#fcb22f] mr-2"></i>NWL CRM
+        </h1>
+        <button id="mobile-menu-btn" class="text-white focus:outline-none p-1">
+            <i class="fa-solid fa-bars text-2xl"></i>
+        </button>
+    </div>
+
+    <div id="sidebar-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden md:hidden"></div>
+
+    <div class="flex flex-col md:flex-row min-h-screen">
+
+        <nav id="sidebar" class="sidebar fixed inset-y-0 left-0 z-50 w-64 transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out md:static md:inset-auto md:h-screen shadow-2xl flex-shrink-0 h-full">
+            <div class="p-5 border-b border-[#8a2b26] sticky top-0 z-10 bg-[#781712] hidden md:block">
+                <h1 class="text-lg font-bold text-white tracking-wide"><i class="fa-solid fa-school text-golden-spark mr-2"></i>NWL Admisiones</h1>
+            </div>
+            <div class="p-5 border-b border-[#8a2b26] bg-[#781712] flex justify-between items-center md:hidden">
+                <h1 class="text-lg font-bold text-white tracking-wide">Menú</h1>
+                <button id="close-sidebar-btn" class="text-white">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+            </div>
+            <div class="py-4">
+                <div class="px-4 text-xs font-bold text-sand uppercase tracking-wider mb-2 opacity-80">Proceso Principal</div>
+                <a href="#visita-guiada" class="sidebar-link block px-6 py-2 text-sand hover:bg-[#60120e] hover:text-white text-sm border-l-2 border-transparent hover:border-[#fcb22f] transition-colors">1. Visita Guiada</a>
+                <a href="#decision" class="sidebar-link block px-6 py-2 text-sand hover:bg-[#60120e] hover:text-white text-sm border-l-2 border-transparent hover:border-[#fcb22f] transition-colors">2. Decisión (Fastpass/Perfil)</a>
+                <a href="#proceso-perfil" class="sidebar-link block px-6 py-2 text-sand hover:bg-[#60120e] hover:text-white text-sm border-l-2 border-transparent hover:border-[#fcb22f] transition-colors">3. Proceso de Perfil</a>
+                <a href="#bienvenida" class="sidebar-link block px-6 py-2 text-sand hover:bg-[#60120e] hover:text-white text-sm border-l-2 border-transparent hover:border-[#fcb22f] transition-colors">4. Bienvenida</a>
+                <div class="px-4 text-xs font-bold text-sand uppercase tracking-wider mb-2 mt-4 opacity-80">Comunidad</div>
+                <a href="#fidelizacion" class="sidebar-link block px-6 py-2 text-sand hover:bg-[#60120e] hover:text-white text-sm border-l-2 border-transparent hover:border-[#fcb22f] transition-colors">5. Fidelización</a>
+                <div class="px-4 text-xs font-bold text-sand uppercase tracking-wider mb-2 mt-4 opacity-80">Métricas</div>
+                <a href="#kpis" class="sidebar-link block px-6 py-2 text-sand hover:bg-[#60120e] hover:text-white text-sm border-l-2 border-transparent hover:border-[#fcb22f] transition-colors">Tiempos y KPIs</a>
+            </div>
+        </nav>
+
+        <main class="flex-1 p-4 md:p-8 max-w-5xl mx-auto w-full">
+
+            <header class="mb-10">
+                <h1 class="text-3xl font-bold text-deep-ember">Manual Operativo de Admisiones</h1>
+                <p class="text-steel mt-2">Guía paso a paso del flujo de captación, seguimiento e inscripción. Haz clic en cada etapa para desplegarla.</p>
+                <div class="flex flex-wrap gap-2 mt-4">
+                    <span class="role-badge role-cap"><i class="fa-solid fa-user-tie"></i> CAP</span>
+                    <span class="role-badge role-nora"><i class="fa-solid fa-robot"></i> NORA (Bot)</span>
+                    <span class="role-badge role-cai"><i class="fa-solid fa-brain"></i> CAI</span>
+                    <span class="role-badge role-recepcion"><i class="fa-solid fa-bell-concierge"></i> Recepción</span>
+                </div>
+            </header>
+
+            <section id="visita-guiada" class="scroll-mt-20">
+                <details class="stage-card border-l-4 border-l-emerald-500">
+                    <summary class="stage-header group">
+                        <div class="flex items-center gap-3">
+                            <span class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-sm">1</span>
+                            <h2 class="text-xl font-bold text-deep-ember">Visita Guiada</h2>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <span class="role-badge role-cap">CAP</span>
+                            <span class="role-badge role-recepcion">Recepción</span>
+                            <i class="fa-solid fa-chevron-down text-steel"></i>
+                        </div>
+                    </summary>
+                    <div class="stage-body">
+                        <div class="bg-emerald-50 border border-emerald-100 rounded-lg p-4 mb-6">
+                            <h4 class="font-bold text-sm text-emerald-800 mb-3 uppercase"><i class="fa-solid fa-handshake"></i> Protocolo de Bienvenida</h4>
+                            <div class="grid md:grid-cols-2 gap-4 text-sm text-emerald-900">
+                                <ul class="space-y-2">
+                                    <li><i class="fa-solid fa-eye text-emerald-600 mr-1"></i> Recepción debe ver citas en calendario.</li>
+                                    <li><i class="fa-solid fa-ticket text-emerald-600 mr-1"></i> Colocar pegatina de identificación a todos.</li>
+                                    <li><i class="fa-solid fa-bottle-water text-emerald-600 mr-1"></i> Ofrecer botella de agua.</li>
+                                </ul>
+                                <div>
+                                    <strong>Regalo para el niño:</strong>
+                                    <ul class="list-disc list-inside ml-2 mt-1">
+                                        <li>Pin de "1st Visit!" (Mat - Sec).</li>
+                                        <li>Libro de colorear (Mat - 3º Primaria).</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <h4 class="font-bold text-sm text-deep-ember mb-2 uppercase">Plática y Descubrimiento</h4>
+                                <ul class="task-list mb-4">
+                                    <li><i class="fa-solid fa-clipboard-question text-emerald-500"></i> ¿Qué tipo de colegio buscan? / ¿Por qué el cambio?</li>
+                                    <li><i class="fa-solid fa-magnifying-glass text-emerald-500"></i> ¿Qué saben de NWL?</li>
+                                    <li><i class="fa-solid fa-basketball text-emerald-500"></i> Intereses del niño (Deporte, hobbies).</li>
+                                    <li><i class="fa-solid fa-book-open text-emerald-500"></i> Mostrar Brochure de sección y modelo NWL.</li>
+                                </ul>
+                                <h4 class="font-bold text-sm text-deep-ember mb-2 uppercase mt-6">Cierre de la Visita</h4>
+                                <ul class="task-list">
+                                    <li><i class="fa-solid fa-question text-emerald-500"></i> Resolver dudas y preguntar qué les gustó más.</li>
+                                    <li><i class="fa-solid fa-file-invoice-dollar text-emerald-500"></i> Entregar <strong>Hoja de Inversión</strong> detallada (incluye uniformes, extras, etc.).</li>
+                                </ul>
+                            </div>
+                            <div class="bg-white border border-slate-200 shadow-sm rounded-lg p-4">
+                                <h4 class="font-bold text-sm text-deep-ember mb-3 uppercase">🦘 El Recorrido & "Joey"</h4>
+                                <p class="text-xs text-steel mb-3">Durante el recorrido, mostrar a Joey (Canguro) y explicar su significado:</p>
+                                <div class="space-y-3 mb-4">
+                                    <div class="flex gap-2 items-start">
+                                        <div class="bg-[#cbb097] text-white p-1 rounded text-xs"><i class="fa-solid fa-shield-heart"></i></div>
+                                        <div><strong class="text-xs text-deep-ember block">Protección y cuidado</strong><span class="text-xs text-steel">NWL es un espacio seguro donde el niño crece acompañado (en la bolsa).</span></div>
+                                    </div>
+                                    <div class="flex gap-2 items-start">
+                                        <div class="bg-[#cbb097] text-white p-1 rounded text-xs"><i class="fa-solid fa-seedling"></i></div>
+                                        <div><strong class="text-xs text-deep-ember block">Crecimiento y desarrollo</strong><span class="text-xs text-steel">Se fortalece hasta estar listo para el mundo.</span></div>
+                                    </div>
+                                    <div class="flex gap-2 items-start">
+                                        <div class="bg-[#cbb097] text-white p-1 rounded text-xs"><i class="fa-solid fa-arrow-trend-up"></i></div>
+                                        <div><strong class="text-xs text-deep-ember block">Impulso y avance</strong><span class="text-xs text-steel">El salto simboliza progreso y confianza.</span></div>
+                                    </div>
+                                </div>
+                                <div class="border-t border-slate-100 pt-3 text-xs text-steel">
+                                    <strong>Checklist Recorrido:</strong> Presentar profesores, mostrar programa de inglés, entrar a salones, demostración de Notion en iPad.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </details>
+            </section>
+
+            <section id="decision" class="scroll-mt-20">
+                <details class="stage-card border-l-4 border-l-blue-500">
+                    <summary class="stage-header group">
+                        <div class="flex items-center gap-3">
+                            <span class="w-8 h-8 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center font-bold text-sm">2</span>
+                            <h2 class="text-xl font-bold text-deep-ember">Decisión: Fastpass o Perfil</h2>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <span class="role-badge role-cap">CAP</span>
+                            <i class="fa-solid fa-chevron-down text-steel"></i>
+                        </div>
+                    </summary>
+                    <div class="stage-body">
+                        <p class="text-sm text-steel mb-4">Cuando la familia responde: <em>"Sí queremos inscribir"</em>, se abren dos caminos:</p>
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div class="bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-lg p-5">
+                                <h4 class="font-bold text-blue-800 text-lg mb-2"><i class="fa-solid fa-bolt text-blue-600 mr-2"></i> Opción 1: Fastpass</h4>
+                                <p class="text-xs text-blue-900 mb-3 opacity-80">Preinscripción acelerada manejada por CAP.</p>
+                                <ul class="text-sm text-blue-900 space-y-2">
+                                    <li><i class="fa-regular fa-clock text-blue-500 w-5"></i> <strong>3 días</strong> para pagar inscripción con beneficio de temporada.</li>
+                                    <li><i class="fa-solid fa-hourglass-end text-blue-500 w-5"></i> <strong>Máximo 15 días</strong> para realizar el pago regular.</li>
+                                </ul>
+                            </div>
+                            <div class="bg-gradient-to-br from-teal-50 to-emerald-50 border border-teal-200 rounded-lg p-5">
+                                <h4 class="font-bold text-teal-800 text-lg mb-2"><i class="fa-solid fa-brain text-teal-600 mr-2"></i> Opción 2: Perfil</h4>
+                                <ul class="text-sm text-teal-900 space-y-2">
+                                    <li><i class="fa-solid fa-calendar-check text-teal-500 w-5"></i> CAI realiza evaluación.</li>
+                                    <li><i class="fa-solid fa-calendar-plus text-teal-500 w-5"></i> Solicitar fechas disponibles para aplicar perfil.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </details>
+            </section>
+
+            <section id="proceso-perfil" class="scroll-mt-20">
+                <details class="stage-card border-l-4 border-l-teal-600">
+                    <summary class="stage-header group">
+                        <div class="flex items-center gap-3">
+                            <span class="w-8 h-8 rounded-full bg-teal-100 text-teal-700 flex items-center justify-center font-bold text-sm">3</span>
+                            <h2 class="text-xl font-bold text-deep-ember">Proceso de Perfil</h2>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <span class="role-badge role-cap">CAP</span>
+                            <span class="role-badge role-cai">CAI</span>
+                            <i class="fa-solid fa-chevron-down text-steel"></i>
+                        </div>
+                    </summary>
+                    <div class="stage-body">
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <h4 class="font-bold text-sm text-deep-ember mb-2 uppercase">1. Preparación y Docs</h4>
+                                <p class="text-xs text-steel mb-2">CAP / CAI, solicita y adjunta en CRM</p>
+                                <ul class="task-list mb-4">
+                                    <li><i class="fa-regular fa-file-pdf text-teal-600"></i> CURP y Acta de nacimiento.</li>
+                                    <li><i class="fa-regular fa-file-lines text-teal-600"></i> Boleta actual y del ciclo anterior.</li>
+                                </ul>
+                                <div class="bg-slate-50 p-2 text-xs rounded border border-slate-200 text-steel mb-4">
+                                    <strong>Flujo:</strong> Se comparten con terapeutas. CAP recibe confirmación de pago. Pasa a estatus "Perfil pagado".
+                                </div>
+                                <h4 class="font-bold text-sm text-deep-ember mb-2 uppercase mt-4">2. El Día del Perfil</h4>
+                                <p class="text-xs text-steel mb-2">CAP recibe al prospecto y a la familia, notifica a CAI de la llegada de los mismos.</p>
+                                <ul class="task-list">
+                                    <li><i class="fa-solid fa-pencil text-teal-600"></i> CAI entrega estuchera (lápices, goma) y pelotita.</li>
+                                    <li><i class="fa-solid fa-mug-hot text-teal-600"></i> Papás pueden esperar en cafetería (café, fruta).</li>
+                                </ul>
+                            </div>
+                            <div class="flex flex-col gap-4">
+                                <div class="data-box">
+                                    <div class="data-title"><i class="fa-solid fa-bell text-steel opacity-60"></i> Recordatorios a Familia</div>
+                                    <ul class="text-xs text-steel space-y-2 mt-2">
+                                        <li class="border-b border-slate-200 pb-1"><strong>1 Día Antes:</strong> Recordar llegar 10 min antes, duración de 2h, niño desayunado.</li>
+                                        <li><strong>2 Horas Antes:</strong> Recordatorio final.</li>
+                                    </ul>
+                                </div>
+                                <div class="bg-white border border-teal-200 rounded p-4 shadow-sm">
+                                    <h4 class="font-bold text-sm text-teal-800 mb-2 uppercase"><i class="fa-solid fa-phone-volume mr-1"></i> 3. Entrega de Resultados (CAI)</h4>
+                                    <ul class="text-xs text-steel space-y-1 mb-3">
+                                        <li>• <strong>3 días hábiles</strong> después del perfil.</li>
+                                        <li>• Presencial.</li>
+                                        <li>• Firmar carta responsiva (seguimiento si aplica).</li>
+                                    </ul>
+                                    <div class="bg-teal-50 p-2 rounded border border-teal-100 text-xs text-teal-900 mt-2">
+                                        CAP inicia trámite de inscripción, cobro y documentación final.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </details>
+            </section>
+
+            <section id="bienvenida" class="scroll-mt-20">
+                <details class="stage-card border-l-4 border-l-indigo-500">
+                    <summary class="stage-header group">
+                        <div class="flex items-center gap-3">
+                            <span class="w-8 h-8 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center font-bold text-sm">4</span>
+                            <h2 class="text-xl font-bold text-deep-ember">Bienvenida a la Familia NWL</h2>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <span class="role-badge role-cap">CAP</span>
+                            <i class="fa-solid fa-chevron-down text-steel"></i>
+                        </div>
+                    </summary>
+                    <div class="stage-body">
+                        <p class="text-sm text-steel mb-4">Post-Inscripción: El alumno es oficialmente parte del colegio.</p>
+                        <ul class="task-list">
+                            <li><i class="fa-brands fa-whatsapp text-indigo-500"></i> <strong>WhatsApp:</strong> CAP envía mensaje de bienvenida usando Fragmento CRM.</li>
+                            <li><i class="fa-regular fa-envelope text-indigo-500"></i> <strong>Correo:</strong> Enviar correo emotivo "Bienvenidos a la familia NWL".</li>
+                        </ul>
+                    </div>
+                </details>
+            </section>
+
+            <section id="fidelizacion" class="scroll-mt-20">
+                <details class="stage-card border-l-4 border-l-pink-500">
+                    <summary class="stage-header group">
+                        <div class="flex items-center gap-3">
+                            <span class="w-8 h-8 rounded-full bg-pink-100 text-pink-700 flex items-center justify-center font-bold text-sm">5</span>
+                            <h2 class="text-xl font-bold text-deep-ember">Fidelización Comunitaria</h2>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <span class="role-badge role-cap">CAP / Equipo</span>
+                            <i class="fa-solid fa-chevron-down text-steel"></i>
+                        </div>
+                    </summary>
+                    <div class="stage-body">
+                        <div class="grid md:grid-cols-3 gap-4">
+                            <div class="bg-pink-50 border border-pink-100 rounded p-4 text-center">
+                                <h4 class="font-bold text-pink-800 text-sm mb-1">Mayo</h4>
+                                <div class="text-2xl mb-2">☕</div>
+                                <p class="text-xs text-pink-900 font-semibold">1er Desayuno / Coffee Break</p>
+                                <p class="text-xs text-pink-800 mt-1">Dinámica con papás, ayuda con circuitos.</p>
+                            </div>
+                            <div class="bg-pink-50 border border-pink-100 rounded p-4 text-center">
+                                <h4 class="font-bold text-pink-800 text-sm mb-1">Verano</h4>
+                                <div class="text-2xl mb-2">☀️</div>
+                                <p class="text-xs text-pink-900 font-semibold">Cursos Especiales</p>
+                                <p class="text-xs text-pink-800 mt-1">Invitación a curso de verano y/o nivelación.</p>
+                            </div>
+                            <div class="bg-pink-50 border border-pink-100 rounded p-4 text-center">
+                                <h4 class="font-bold text-pink-800 text-sm mb-1">Agosto</h4>
+                                <div class="text-2xl mb-2">🎒</div>
+                                <p class="text-xs text-pink-900 font-semibold">Junta de Bienvenida</p>
+                                <p class="text-xs text-pink-800 mt-1">Entregar agendas, presentar directoras, info escolar.</p>
+                            </div>
+                        </div>
+                    </div>
+                </details>
+            </section>
+
+            <section id="kpis" class="mt-12 mb-8 scroll-mt-20 border-t border-slate-200 pt-8">
+                <h3 class="text-2xl font-bold text-deep-ember mb-2">Tiempos Objetivo y KPIs</h3>
+                <p class="text-sm text-steel mb-6"><strong>Meta Global:</strong> Reducir el tiempo total del proceso de 2-3 semanas a &le; 1 semana (7 días hábiles máx).</p>
+                <div class="overflow-x-auto bg-white rounded-lg shadow border border-slate-200 mb-8">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-slate-50 text-deep-ember text-sm border-b border-slate-200">
+                                <th class="p-3 font-semibold">Etapa del Proceso</th>
+                                <th class="p-3 font-semibold">Tiempo Objetivo</th>
+                                <th class="p-3 font-semibold">Responsable</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-sm text-steel divide-y divide-slate-100">
+                            <tr>
+                                <td class="p-3">1. Visita Guiada</td>
+                                <td class="p-3 font-medium text-orange-500">45 - 60 min</td>
+                                <td class="p-3"><span class="text-xs bg-slate-100 px-2 py-1 rounded">CAP</span></td>
+                            </tr>
+                            <tr>
+                                <td class="p-3">2. Decisión &rarr; Perfil aplicado</td>
+                                <td class="p-3 font-medium">Según Disp.</td>
+                                <td class="p-3"><span class="text-xs bg-slate-100 px-2 py-1 rounded">CAI</span></td>
+                            </tr>
+                            <tr>
+                                <td class="p-3">3. Perfil aplicado &rarr; Resultados entregados</td>
+                                <td class="p-3 font-medium text-teal-600">3 días hábiles</td>
+                                <td class="p-3"><span class="text-xs bg-slate-100 px-2 py-1 rounded">CAI</span></td>
+                            </tr>
+                            <tr>
+                                <td class="p-3">4. Resultados &rarr; Decisión Inscripción</td>
+                                <td class="p-3 font-medium text-indigo-600">3-5 días (Max 1 sem)</td>
+                                <td class="p-3"><span class="text-xs bg-slate-100 px-2 py-1 rounded">CAP</span></td>
+                            </tr>
+                            <tr>
+                                <td class="p-3">5. Decisión &rarr; Pago Completado</td>
+                                <td class="p-3 font-medium text-green-600">Máx 15 días (3 Fastpass)</td>
+                                <td class="p-3"><span class="text-xs bg-slate-100 px-2 py-1 rounded">CAP</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script>
+        const btn = document.getElementById('mobile-menu-btn');
+        const closeBtn = document.getElementById('close-sidebar-btn');
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebar-overlay');
+        const links = document.querySelectorAll('.sidebar-link');
+
+        function toggleSidebar() {
+            if (sidebar.classList.contains('-translate-x-full')) {
+                sidebar.classList.remove('-translate-x-full');
+                sidebar.classList.add('translate-x-0');
+                overlay.classList.remove('hidden');
+            } else {
+                sidebar.classList.add('-translate-x-full');
+                sidebar.classList.remove('translate-x-0');
+                overlay.classList.add('hidden');
+            }
+        }
+
+        btn.addEventListener('click', toggleSidebar);
+        closeBtn.addEventListener('click', toggleSidebar);
+        overlay.addEventListener('click', toggleSidebar);
+
+        links.forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth < 768) {
+                    toggleSidebar();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
