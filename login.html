@@ -156,42 +156,42 @@
                 nombre: "Elsa Medina",
                 password: "elsa2026",
                 role: "user",
-                reportes: ["cap-elsa-medina"]
+                reportes: ["semanales-marzo-2026", "semanales-abril-2026", "cap-elsa-medina"]
             },
             "daniela.alamilla": {
                 nombre: "Daniela Alamilla",
                 password: "daniela2026",
                 role: "user",
-                reportes: ["cap-daniela-alamilla"]
+                reportes: ["semanales-marzo-2026", "semanales-abril-2026", "cap-daniela-alamilla"]
             },
             "ana.isabel": {
                 nombre: "Ana Isabel Cervantes",
                 password: "ana2026",
                 role: "user",
-                reportes: ["cap-ana-isabel"]
+                reportes: ["semanales-marzo-2026", "semanales-abril-2026", "cap-ana-isabel"]
             },
             "delia.rodriguez": {
                 nombre: "Delia Rodriguez",
                 password: "delia2026",
                 role: "user",
-                reportes: ["cap-delia-rodriguez"]
+                reportes: ["semanales-marzo-2026", "semanales-abril-2026", "cap-delia-rodriguez"]
             },
             "alberto.rodriguez": {
                 nombre: "Alberto Rodriguez",
                 password: "alberto2026",
                 role: "user",
-                reportes: ["cap-alberto-rodriguez"]
+                reportes: ["semanales-marzo-2026", "semanales-abril-2026", "cap-alberto-rodriguez"]
             },
             "elizabeth.barrios": {
                 nombre: "Elizabeth Barrios",
                 password: "elizabeth2026",
                 role: "user",
-                reportes: ["cap-elizabeth-barrios"]
+                reportes: ["semanales-marzo-2026", "semanales-abril-2026", "cap-elizabeth-barrios"]
             }
         };
 
         // Re-seed si cambia la versión del sistema de permisos
-        const NWL_VERSION = "4";
+        const NWL_VERSION = "5";
         if (localStorage.getItem('nwl_version') !== NWL_VERSION) {
             localStorage.setItem('nwl_users', JSON.stringify(USUARIOS_DEFAULT));
             localStorage.setItem('nwl_version', NWL_VERSION);
