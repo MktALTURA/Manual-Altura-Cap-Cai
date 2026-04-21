@@ -145,6 +145,34 @@
     <div class="card-body"><div class="campus-grid" id="campusGrid"></div></div>
   </div>
 
+  <!-- Fastpass -->
+  <div class="card fade-in d4" id="fastpassCard" style="display:none;">
+    <div class="card-head"><h2>🦘 Fastpass</h2></div>
+    <div class="card-body">
+      <p style="font-size:.8rem;color:#666;margin-bottom:12px;">Oportunidades con Fastpass activo — inscripción directa sin pasar por evaluación CAI. Máximo 3 días para pagar, hasta 15 días con beneficio de temporada.</p>
+      <div class="kpi-grid" id="fastpassKpis" style="margin-bottom:16px;"></div>
+      <table id="fastpassTable">
+        <thead><tr><th>Campus</th><th class="text-right">Abiertos</th><th class="text-right">Inscritos</th><th class="text-right">Perdidos</th><th class="text-right">Total</th></tr></thead>
+        <tbody></tbody>
+      </table>
+      <p id="fastpassNote" style="margin-top:10px;font-size:.78rem;color:#666;"></p>
+    </div>
+  </div>
+
+  <!-- Inscritos por Grado -->
+  <div class="card fade-in d4" id="inscritosPorGradoCard" style="display:none;">
+    <div class="card-head"><h2>🎓 Inscritos por Grado</h2></div>
+    <div class="card-body">
+      <p style="font-size:.8rem;color:#666;margin-bottom:12px;">Desglose de oportunidades ganadas (inscritos) por grado académico y campus.</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+        <div><div class="chart-container" style="height:280px;"><canvas id="gradoChart"></canvas></div></div>
+        <div><table id="gradoTable"><thead><tr><th>Grado</th><th class="text-right">Inscritos</th><th class="text-right">%</th></tr></thead><tbody></tbody></table></div>
+      </div>
+      <h3 style="font-size:.9rem;color:var(--color-primario);margin:20px 0 10px;">Por Campus</h3>
+      <div id="gradoByCampus"></div>
+    </div>
+  </div>
+
   <!-- CAP Performance -->
   <div class="card fade-in d4">
     <div class="card-head"><h2>Métricas por CAP</h2></div>
@@ -274,6 +302,53 @@ function render(d) {
   if (d.priorities) {
     const ol = document.getElementById('prioritiesList');
     d.priorities.forEach(p => { ol.innerHTML += `<li><strong>${p}</strong></li>`; });
+  }
+
+  // Fastpass
+  if (d.fastpass && (d.fastpass.total || d.fastpass.byCampus)) {
+    document.getElementById('fastpassCard').style.display = '';
+    const kpiEl = document.getElementById('fastpassKpis');
+    const fp = d.fastpass;
+    [
+      { lbl: 'Abiertos', val: fp.open },
+      { lbl: 'Inscritos', val: fp.won },
+      { lbl: 'Perdidos', val: fp.lost },
+      { lbl: 'Total', val: fp.total },
+    ].forEach(k => { kpiEl.innerHTML += `<div class="kpi"><div class="num">${v(k.val, 0)}</div><div class="lbl">${k.lbl}</div></div>`; });
+    const tbody = document.querySelector('#fastpassTable tbody');
+    (fp.byCampus || []).forEach(c => {
+      tbody.innerHTML += `<tr><td>${v(c.campus)}</td><td class="text-right">${v(c.open, 0)}</td><td class="text-right">${v(c.won, 0)}</td><td class="text-right">${v(c.lost, 0)}</td><td class="text-right"><strong>${v(c.total, 0)}</strong></td></tr>`;
+    });
+    if (fp.note) document.getElementById('fastpassNote').innerHTML = fp.note;
+  }
+
+  // Inscritos por Grado
+  if (d.inscritosPorGrado && d.inscritosPorGrado.all && d.inscritosPorGrado.all.length) {
+    document.getElementById('inscritosPorGradoCard').style.display = '';
+    const g = d.inscritosPorGrado;
+    const totalAll = g.all.reduce((s,x) => s + (x.count || 0), 0) || 1;
+    const tbody = document.querySelector('#gradoTable tbody');
+    g.all.forEach(row => {
+      tbody.innerHTML += `<tr><td>${v(row.grado)}</td><td class="text-right">${v(row.count, 0)}</td><td class="text-right">${Math.round((row.count||0)/totalAll*100)}%</td></tr>`;
+    });
+    tbody.innerHTML += `<tr style="background:var(--color-oro-suave);font-weight:700;"><td>Total</td><td class="text-right">${totalAll}</td><td class="text-right">100%</td></tr>`;
+    new Chart(document.getElementById('gradoChart'), {
+      type: 'bar',
+      data: { labels: g.all.map(x => v(x.grado)), datasets: [{ label: 'Inscritos', data: g.all.map(x => x.count || 0), backgroundColor: '#701321cc', borderRadius: 4 }] },
+      options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { beginAtZero: true } } }
+    });
+    if (g.byCampus && typeof g.byCampus === 'object') {
+      const container = document.getElementById('gradoByCampus');
+      container.innerHTML = '<div class="campus-grid">' +
+        Object.entries(g.byCampus).map(([campus, rows]) => {
+          const total = (rows || []).reduce((s,x) => s + (x.count || 0), 0);
+          return `<div class="campus-card">
+            <h3>📍 ${v(campus)} <span style="font-size:.75rem;color:#888;font-weight:400;">(${total})</span></h3>
+            ${(rows || []).map(r => `<div class="campus-stat"><span>${v(r.grado)}</span><span><strong>${v(r.count, 0)}</strong></span></div>`).join('')}
+          </div>`;
+        }).join('') +
+      '</div>';
+    }
   }
 
   // Data quality
