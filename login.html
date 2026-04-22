@@ -217,11 +217,17 @@
                 password: "sanmiguel2026",
                 role: "user",
                 reportes: ["semanales-marzo-2026", "semanales-abril-2026"]
+            },
+            "rectoria": {
+                nombre: "Rectoría NWL",
+                password: "rectoria2026",
+                role: "user",
+                reportes: ["semanales-marzo-2026", "semanales-abril-2026"]
             }
         };
 
         // Re-seed si cambia la versión del sistema de permisos
-        const NWL_VERSION = "7";
+        const NWL_VERSION = "8";
         if (localStorage.getItem('nwl_version') !== NWL_VERSION) {
             localStorage.setItem('nwl_users', JSON.stringify(USUARIOS_DEFAULT));
             localStorage.setItem('nwl_version', NWL_VERSION);
