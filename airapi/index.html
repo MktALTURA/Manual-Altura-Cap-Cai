@@ -1,0 +1,1220 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manual CRM — Airapí</title>
+    <meta name="description" content="Guía interactiva para asesores Airapí: pipelines, etapas y movimiento de leads en GoHighLevel.">
+    <style>
+        :root {
+            --bg: #f6f3ee;
+            --bg-card: #ffffff;
+            --primary: #2f4538;          /* deep sage */
+            --primary-light: #486b58;
+            --primary-dark: #1f2e25;
+            --accent: #b48b56;            /* warm bronze */
+            --accent-light: #d2ad7e;
+            --text: #2a2a2a;
+            --text-soft: #5a5a5a;
+            --text-muted: #8a8a8a;
+            --border: #e6dfd2;
+            --shadow-sm: 0 2px 6px rgba(31,46,37,0.06);
+            --shadow-md: 0 8px 24px rgba(31,46,37,0.10);
+            --shadow-lg: 0 16px 40px rgba(31,46,37,0.16);
+            --radius: 14px;
+            --radius-lg: 22px;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.55;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ---------- HEADER ---------- */
+        .topbar {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            color: #fff;
+            padding: 48px 24px 56px;
+            position: relative;
+            overflow: hidden;
+        }
+        .topbar::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 60%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(180,139,86,0.18), transparent 60%);
+            pointer-events: none;
+        }
+        .topbar-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+        .breadcrumb {
+            font-size: 0.85rem;
+            opacity: 0.75;
+            margin-bottom: 16px;
+        }
+        .breadcrumb a {
+            color: var(--accent-light);
+            text-decoration: none;
+        }
+        .breadcrumb a:hover { text-decoration: underline; }
+        .topbar h1 {
+            font-size: clamp(1.8rem, 4vw, 2.6rem);
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+        .topbar .accent-line {
+            width: 64px;
+            height: 3px;
+            background: var(--accent);
+            margin: 14px 0 18px;
+        }
+        .topbar p {
+            font-size: 1.05rem;
+            opacity: 0.92;
+            max-width: 720px;
+        }
+
+        /* ---------- ACCESS LINKS ---------- */
+        .access {
+            max-width: 1100px;
+            margin: -36px auto 40px;
+            padding: 0 24px;
+            position: relative;
+            z-index: 2;
+        }
+        .access-grid {
+            background: #fff;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            padding: 22px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 14px;
+        }
+        .access-card {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 16px;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            text-decoration: none;
+            color: var(--text);
+            transition: all 0.2s ease;
+            background: #fff;
+        }
+        .access-card:hover {
+            transform: translateY(-2px);
+            border-color: var(--accent);
+            box-shadow: var(--shadow-sm);
+        }
+        .access-card .ico {
+            width: 38px; height: 38px;
+            border-radius: 10px;
+            background: var(--bg);
+            display: flex; align-items: center; justify-content: center;
+            color: var(--primary);
+            flex-shrink: 0;
+        }
+        .access-card .ico svg { width: 22px; height: 22px; fill: currentColor; }
+        .access-card .meta { display: flex; flex-direction: column; }
+        .access-card .meta strong { font-size: 0.95rem; color: var(--primary-dark); }
+        .access-card .meta span { font-size: 0.78rem; color: var(--text-muted); }
+
+        /* ---------- LAYOUT ---------- */
+        main {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 24px 80px;
+        }
+
+        h2.section-title {
+            font-size: 1.6rem;
+            color: var(--primary-dark);
+            margin: 48px 0 6px;
+            font-weight: 700;
+        }
+        h2.section-title .num {
+            display: inline-block;
+            background: var(--primary);
+            color: #fff;
+            width: 32px; height: 32px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 32px;
+            font-size: 0.95rem;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+        .section-sub {
+            color: var(--text-soft);
+            font-size: 1rem;
+            margin-bottom: 22px;
+            max-width: 780px;
+        }
+
+        /* ---------- TOC / OVERVIEW ---------- */
+        .toc {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 14px;
+            margin: 24px 0 32px;
+        }
+        .toc a {
+            text-decoration: none;
+            background: #fff;
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--accent);
+            padding: 16px 18px;
+            border-radius: var(--radius);
+            color: var(--text);
+            transition: all 0.2s;
+            display: block;
+        }
+        .toc a:hover {
+            border-left-color: var(--primary);
+            transform: translateX(3px);
+            box-shadow: var(--shadow-sm);
+        }
+        .toc strong { color: var(--primary-dark); display: block; font-size: 1rem; }
+        .toc small { color: var(--text-muted); font-size: 0.82rem; }
+
+        /* ---------- PIPELINE CARDS ---------- */
+        .pipe {
+            background: #fff;
+            border-radius: var(--radius-lg);
+            padding: 28px;
+            margin-bottom: 22px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+        }
+        .pipe-head {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 8px;
+            flex-wrap: wrap;
+        }
+        .pipe-head h3 {
+            font-size: 1.3rem;
+            color: var(--primary-dark);
+            font-weight: 700;
+            flex: 1;
+            min-width: 0;
+        }
+        .pipe-head .badge {
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+        .badge-core { background: #ede4d3; color: #6e4d1f; }
+        .badge-auto { background: #dde9e1; color: #2f4538; }
+        .badge-cross { background: #ead8e3; color: #6b2d56; }
+        .badge-mascotas { background: #d8e3ea; color: #245b73; }
+
+        .pipe-purpose {
+            color: var(--text-soft);
+            margin-bottom: 16px;
+            font-size: 0.95rem;
+        }
+
+        /* ---------- STAGE FLOW ---------- */
+        .flow {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: stretch;
+            margin: 16px 0 20px;
+        }
+        .stage-chip {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            color: var(--primary-dark);
+            padding: 9px 14px;
+            border-radius: 24px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            user-select: none;
+        }
+        .stage-chip .num-dot {
+            width: 18px; height: 18px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: #fff;
+            font-size: 0.7rem;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .stage-chip:hover {
+            background: #fff;
+            border-color: var(--accent);
+            box-shadow: var(--shadow-sm);
+        }
+        .stage-chip.active {
+            background: var(--primary);
+            color: #fff;
+            border-color: var(--primary);
+        }
+        .stage-chip.active .num-dot {
+            background: var(--accent);
+        }
+        .arrow {
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+        @media (max-width: 600px) {
+            .arrow { display: none; }
+        }
+
+        /* ---------- STAGE DETAIL PANEL ---------- */
+        .stage-detail {
+            background: var(--bg);
+            border-radius: var(--radius);
+            padding: 20px;
+            border-left: 4px solid var(--accent);
+            margin-top: 12px;
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+        .stage-detail.active { display: block; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .stage-detail h4 {
+            color: var(--primary-dark);
+            font-size: 1.1rem;
+            margin-bottom: 12px;
+        }
+        .stage-detail .row {
+            margin-bottom: 12px;
+        }
+        .stage-detail .row:last-child { margin-bottom: 0; }
+        .stage-detail .lbl {
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            color: var(--accent);
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+        .stage-detail .val {
+            color: var(--text);
+            font-size: 0.95rem;
+        }
+        .stage-detail ul {
+            margin: 6px 0 0 18px;
+        }
+        .stage-detail ul li {
+            margin-bottom: 4px;
+        }
+
+        /* ---------- HIGHLIGHT BOX ---------- */
+        .highlight {
+            background: linear-gradient(135deg, #fff8eb, #fdf3df);
+            border-left: 4px solid var(--accent);
+            padding: 16px 18px;
+            border-radius: var(--radius);
+            margin: 18px 0;
+        }
+        .highlight strong { color: var(--primary-dark); display: block; margin-bottom: 4px; }
+        .highlight p { color: var(--text-soft); font-size: 0.93rem; }
+
+        .alert {
+            background: #fdecec;
+            border-left: 4px solid #c0392b;
+            padding: 14px 16px;
+            border-radius: var(--radius);
+            margin: 14px 0;
+            font-size: 0.93rem;
+        }
+        .alert strong { color: #952121; }
+
+        /* ---------- TABLE ---------- */
+        .table-wrap {
+            overflow-x: auto;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            margin: 14px 0 20px;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            background: #fff;
+            font-size: 0.92rem;
+        }
+        th, td {
+            padding: 11px 14px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+        th {
+            background: var(--primary);
+            color: #fff;
+            font-weight: 600;
+            font-size: 0.82rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        tr:last-child td { border-bottom: none; }
+        tr:hover td { background: var(--bg); }
+
+        /* ---------- RULES ---------- */
+        .rules {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 14px;
+            margin: 18px 0;
+        }
+        .rule {
+            background: #fff;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            padding: 18px;
+            position: relative;
+        }
+        .rule .rule-num {
+            position: absolute;
+            top: -10px; left: 16px;
+            background: var(--accent);
+            color: #fff;
+            width: 26px; height: 26px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700;
+            font-size: 0.8rem;
+            box-shadow: var(--shadow-sm);
+        }
+        .rule h5 {
+            color: var(--primary-dark);
+            margin-bottom: 6px;
+            font-size: 1rem;
+            margin-top: 4px;
+        }
+        .rule p { color: var(--text-soft); font-size: 0.9rem; }
+
+        /* ---------- FAQ ACCORDION ---------- */
+        .faq-item {
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            margin-bottom: 10px;
+            overflow: hidden;
+        }
+        .faq-q {
+            padding: 16px 18px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            color: var(--primary-dark);
+            transition: background 0.2s;
+            user-select: none;
+        }
+        .faq-q:hover { background: var(--bg); }
+        .faq-q .toggle {
+            font-size: 1.4rem;
+            color: var(--accent);
+            transition: transform 0.3s;
+            line-height: 1;
+        }
+        .faq-item.open .faq-q .toggle {
+            transform: rotate(45deg);
+        }
+        .faq-a {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.35s ease;
+            padding: 0 18px;
+            color: var(--text-soft);
+            font-size: 0.94rem;
+        }
+        .faq-item.open .faq-a {
+            max-height: 600px;
+            padding: 0 18px 18px;
+        }
+
+        /* ---------- FOOTER ---------- */
+        footer {
+            background: var(--primary-dark);
+            color: rgba(255,255,255,0.7);
+            text-align: center;
+            padding: 28px 24px;
+            font-size: 0.85rem;
+        }
+        footer strong { color: var(--accent-light); }
+
+        /* ---------- BACK TO TOP ---------- */
+        .top-btn {
+            position: fixed;
+            right: 22px; bottom: 22px;
+            background: var(--primary);
+            color: #fff;
+            width: 44px; height: 44px;
+            border-radius: 50%;
+            display: none;
+            align-items: center; justify-content: center;
+            cursor: pointer;
+            box-shadow: var(--shadow-md);
+            border: none;
+            font-size: 1.1rem;
+            z-index: 100;
+            transition: background 0.2s;
+        }
+        .top-btn:hover { background: var(--primary-light); }
+        .top-btn.visible { display: flex; }
+
+        @media (max-width: 720px) {
+            .pipe { padding: 20px; }
+            .topbar { padding: 36px 18px 50px; }
+            main { padding: 0 16px 60px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ============== HEADER ============== -->
+<header class="topbar">
+    <div class="topbar-inner">
+        <div class="breadcrumb">
+            <a href="../index.html">← Inicio</a> &nbsp;/&nbsp; Manual CRM Airapí
+        </div>
+        <h1>Manual CRM — Airapí</h1>
+        <div class="accent-line"></div>
+        <p>Guía operativa para asesores y asesoras. Cómo trabajamos los leads en GoHighLevel: pipelines, etapas, criterios para mover oportunidades, y reglas de oro del proceso.</p>
+    </div>
+</header>
+
+<!-- ============== ACCESS LINKS ============== -->
+<section class="access">
+    <div class="access-grid">
+        <a class="access-card" href="https://app.gohighlevel.com" target="_blank" rel="noopener">
+            <div class="ico"><svg viewBox="0 0 24 24"><path d="M12 2 4 5v6c0 5 3.5 9.7 8 11 4.5-1.3 8-6 8-11V5l-8-3zm0 5 5 2v3c0 3.4-2.2 6.7-5 7.7-2.8-1-5-4.3-5-7.7V9l5-2z"/></svg></div>
+            <div class="meta">
+                <strong>Web (Navegador)</strong>
+                <span>app.gohighlevel.com</span>
+            </div>
+        </a>
+        <a class="access-card" href="https://apps.apple.com/app/leadconnector/id1564927284" target="_blank" rel="noopener">
+            <div class="ico"><svg viewBox="0 0 24 24"><path d="M17.5 12.6c0-2.7 2.2-4 2.3-4-1.3-1.8-3.2-2.1-3.9-2.1-1.7-.2-3.2 1-4 1-.8 0-2.1-1-3.4-1-1.8 0-3.4 1-4.3 2.6-1.8 3.2-.5 7.9 1.3 10.5.9 1.3 1.9 2.7 3.3 2.6 1.3-.1 1.8-.8 3.4-.8 1.6 0 2 .8 3.4.8 1.4 0 2.3-1.3 3.2-2.6 1-1.5 1.4-2.9 1.4-3-.1 0-2.7-1-2.7-4zm-2.7-7.4c.7-.9 1.2-2.1 1.1-3.2-1 0-2.3.7-3 1.5-.6.8-1.2 2-1 3.1 1.2.1 2.3-.6 2.9-1.4z"/></svg></div>
+            <div class="meta">
+                <strong>iOS — App Store</strong>
+                <span>LeadConnector (iPhone/iPad)</span>
+            </div>
+        </a>
+        <a class="access-card" href="https://play.google.com/store/apps/details?id=com.leadconnector" target="_blank" rel="noopener">
+            <div class="ico"><svg viewBox="0 0 24 24"><path d="M3 3.3v17.4c0 .4.2.7.5.9l9.6-9.6L3.5 2.4c-.3.2-.5.5-.5.9zm12.7 5.4-2.3 2.3 6.6 3.8c.5.3.5 1 0 1.3l-6.6 3.8 2.3 2.3 9.4-5.4c.7-.4.7-1.4 0-1.8L15.7 8.7zm-2.5 2.4-9.5-5.4 9.5 9.5 2.5-2.5-2.5-1.6z"/></svg></div>
+            <div class="meta">
+                <strong>Android — Play Store</strong>
+                <span>LeadConnector (Android)</span>
+            </div>
+        </a>
+        <a class="access-card" href="https://help.gohighlevel.com/support/solutions/articles/48000981735-pipelines-and-opportunities" target="_blank" rel="noopener">
+            <div class="ico"><svg viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm1 17h-2v-6h2v6zm0-8h-2V7h2v4z"/></svg></div>
+            <div class="meta">
+                <strong>Ayuda oficial GHL</strong>
+                <span>Centro de soporte (inglés)</span>
+            </div>
+        </a>
+    </div>
+</section>
+
+<main>
+
+    <!-- ============== INTRO / RESUMEN ============== -->
+    <h2 class="section-title"><span class="num">1</span>Cómo está organizado el CRM</h2>
+    <p class="section-sub">
+        En Airapí trabajamos con <strong>7 pipelines</strong>. Cada uno representa un tipo de oportunidad. Un mismo cliente puede tener oportunidades en varios pipelines a la vez. <strong>Regla central: 1 oportunidad por persona × producto.</strong> Si una familia compra 4 planes, eso son 4 oportunidades separadas (no una sola).
+    </p>
+
+    <div class="toc">
+        <a href="#pipe-contacto"><strong>Contacto Inicial</strong><small>Punto de entrada — todo lead frío empieza aquí</small></a>
+        <a href="#pipe-prevision"><strong>Previsión</strong><small>Plan funerario a futuro — pago en mensualidades</small></a>
+        <a href="#pipe-nichos"><strong>Nichos</strong><small>Venta de nicho (Capilla / Mausoleo)</small></a>
+        <a href="#pipe-inmediato"><strong>Servicio Inmediato</strong><small>Familia con necesidad ahora</small></a>
+        <a href="#pipe-mascotas"><strong>Crematorio Mascotas</strong><small>Servicio nuevo — flujo simple</small></a>
+        <a href="#pipe-cross"><strong>Cross-Sell / Cliente Meta</strong><small>Cliente actual comprando otro producto</small></a>
+        <a href="#pipe-postventa"><strong>Postventa & Cartera</strong><small>Seguimiento de mensualidades y cobranza</small></a>
+        <a href="#reglas"><strong>Reglas de oro</strong><small>Lo que nunca se rompe</small></a>
+        <a href="#campos"><strong>Campos clave</strong><small>Qué llenar en cada oportunidad</small></a>
+        <a href="#faq"><strong>FAQ</strong><small>Preguntas frecuentes</small></a>
+    </div>
+
+    <div class="highlight">
+        <strong>Antes de empezar</strong>
+        <p>Si abres el CRM por primera vez, descarga la app móvil (LeadConnector) — la mayoría del seguimiento del día se hace desde el celular. Las funciones avanzadas (cotizar, configurar) están en la versión web.</p>
+    </div>
+
+    <!-- ============== 1. CONTACTO INICIAL ============== -->
+    <h2 class="section-title" id="pipe-contacto"><span class="num">2</span>Pipelines — paso a paso</h2>
+    <p class="section-sub">Haz clic en cada etapa para ver qué hay que hacer y cuándo mover el lead a la siguiente.</p>
+
+    <div class="pipe" id="contacto-card">
+        <div class="pipe-head">
+            <h3>Contacto Inicial</h3>
+            <span class="badge badge-core">Punto de entrada</span>
+        </div>
+        <p class="pipe-purpose">
+            Aquí entran <strong>todos los leads nuevos</strong> sin importar la fuente (stand, formulario, redes, walk-in, evento). El objetivo es calificar rápido qué tipo de oportunidad es y moverlo al pipeline correcto.
+        </p>
+        <div class="flow" data-pipe="contacto">
+            <div class="stage-chip" data-stage="0"><span class="num-dot">1</span>Nuevo Lead</div>
+            <span class="arrow">→</span>
+            <div class="stage-chip" data-stage="1"><span class="num-dot">2</span>Contactado</div>
+            <span class="arrow">→</span>
+            <div class="stage-chip" data-stage="2"><span class="num-dot">3</span>Prospecto</div>
+            <span class="arrow">→</span>
+            <div class="stage-chip" data-stage="3"><span class="num-dot">4</span>Cotizado</div>
+            <span class="arrow">→</span>
+            <div class="stage-chip" data-stage="4"><span class="num-dot">5</span>Cliente</div>
+        </div>
+        <div class="stage-detail" id="contacto-detail">
+            <h4>Selecciona una etapa para ver el detalle</h4>
+        </div>
+        <div class="alert">
+            <strong>Importante:</strong> Cuando el lead se "califica" (sabes qué quiere), <strong>no lo dejes en este pipeline</strong>. Crea/mueve la oportunidad al pipeline correcto: Previsión, Nichos, Servicio Inmediato o Mascotas. Este pipeline es solo el filtro inicial.
+        </div>
+    </div>
+
+    <!-- ============== 2. PREVISIÓN ============== -->
+    <div class="pipe" id="pipe-prevision">
+        <div class="pipe-head">
+            <h3>Previsión</h3>
+            <span class="badge badge-core">Producto principal</span>
+        </div>
+        <p class="pipe-purpose">
+            Plan funerario adquirido a futuro. Mensualidades sin intereses. <strong>Una oportunidad = una persona cubierta.</strong> Si una familia compra 4 planes, abre 4 oportunidades.
+        </p>
+        <div class="flow" data-pipe="prevision">
+            <div class="stage-chip" data-stage="0"><span class="num-dot">1</span>Nuevo Lead</div>
+            <span class="arrow">→</span>
+            <div class="stage-chip" data-stage="1"><span class="num-dot">2</span>Calificado</div>
+            <span class="arrow">→</span>
+            <div class="stage-chip" data-stage="2"><span class="num-dot">3</span>Presentación</div>
+            <span class="arrow">→</span>
+            <div class="stage-chip" data-stage="3"><span class="num-dot">4</span>Cita</div>
+            <span class="arrow">→</span>
+            <div class="stage-chip" data-stage="4"><span class="num-dot">5</span>Cotización Enviada</div>
+            <span class="arrow">→</span>
+            <div class="stage-chip" data-stage="5"><span class="num-dot">6</span>Negociación</div>
+            <span class="arrow">→</span>
+            <div class="stage-chip" data-stage="6"><span class="num-dot">7</span>Cliente Cerrado</div>
+        </div>
+        <div class="stage-detail" id="prevision-detail">
+            <h4>Selecciona una etapa para ver el detalle</h4>
+        </div>
+    </div>
+
+    <!-- ============== 3. NICHOS ============== -->
+    <div class="pipe" id="pipe-nichos">
+        <div class="pipe-head">
+            <h3>Nichos</h3>
+            <span class="badge badge-core">Venta cruzada principal</span>
+        </div>
+        <p class="pipe-purpose">
+            Venta de nicho en Capilla o Mausoleo. Las oportunidades en este pipeline normalmente vienen de <strong>2 fuentes</strong>: post-velación (familias que ya están con nosotros) o cross-sell de clientes con previsión &gt;90 días.
+        </p>
+        <div class="flow" data-pipe="nichos">
+            <div class="stage-chip" data-stage="0"><span class="num-dot">1</span>Trigger Recibido</div>
+            <span class="arrow">→</span>
+            <div class="stage-chip" data-stage="1"><span class="num-dot">2</span>Calificado</div>
+            <span class="arrow">→</span>
+            <div class="stage-chip" data-stage="2"><span class="num-dot">3</span>Visita a Nichos</div>
+            <span class="arrow">→</span>
+            <div class="stage-chip" data-stage="3"><span class="num-dot">4</span>Cotizado</div>
+            <span class="arrow">→</span>
+            <div class="stage-chip" data-stage="4"><span class="num-dot">5</span>Cliente Cerrado</div>
+        </div>
+        <div class="stage-detail" id="nichos-detail">
+            <h4>Selecciona una etapa para ver el detalle</h4>
+        </div>
+        <div class="highlight">
+            <strong>Capacidades de nicho (memorízalas)</strong>
+            <p>Línea Roja / Azul / Rosa = hasta 4 personas · Línea Verde / Naranja / Amarilla = hasta 8 personas · Línea Morada = hasta 1 · Columna Morada = hasta 2. <strong>El bot solo menciona los de 4 y 8.</strong></p>
+        </div>
+    </div>
+
+    <!-- ============== 4. SERVICIO INMEDIATO ============== -->
+    <div class="pipe" id="pipe-inmediato">
+        <div class="pipe-head">
+            <h3>Servicio Inmediato</h3>
+            <span class="badge badge-core">Urgente — sensibilidad alta</span>
+        </div>
+        <p class="pipe-purpose">
+            Familia con un fallecimiento ya ocurrido. Tono cálido, respuesta rápida. <strong>El cierre es de horas, no días.</strong> Documentación pesada (acta, INE, autorizaciones).
+        </p>
+        <div class="flow" data-pipe="inmediato">
+            <div class="stage-chip" data-stage="0"><span class="num-dot">1</span>Lead Urgente / Servicio Activo</div>
+            <span class="arrow">→</span>
+            <div class="stage-chip" data-stage="1"><span class="num-dot">2</span>Cotizado Inmediato</div>
+            <span class="arrow">→</span>
+            <div class="stage-chip" data-stage="2"><span class="num-dot">3</span>Servicio Cerrado</div>
+        </div>
+        <div class="stage-detail" id="inmediato-detail">
+            <h4>Selecciona una etapa para ver el detalle</h4>
+        </div>
+        <div class="alert">
+            <strong>Sin contrato firmado en esta línea.</strong> No subas archivo de contrato — aquí solo aplican formato de pertenencias, autorización de embalsamamiento y los documentos de identificación.
+        </div>
+    </div>
+
+    <!-- ============== 5. CREMATORIO MASCOTAS ============== -->
+    <div class="pipe" id="pipe-mascotas">
+        <div class="pipe-head">
+            <h3>Crematorio Mascotas</h3>
+            <span class="badge badge-mascotas">Línea nueva</span>
+        </div>
+        <p class="pipe-purpose">
+            Servicio reciente de Airapí. Flujo simple de 3 etapas. Buena puerta de entrada para clientes nuevos que no estarían listos para previsión todavía.
+        </p>
+        <div class="flow" data-pipe="mascotas">
+            <div class="stage-chip" data-stage="0"><span class="num-dot">1</span>Nuevo Lead</div>
+            <span class="arrow">→</span>
+            <div class="stage-chip" data-stage="1"><span class="num-dot">2</span>Cotizado</div>
+            <span class="arrow">→</span>
+            <div class="stage-chip" data-stage="2"><span class="num-dot">3</span>Cliente Cerrado</div>
+        </div>
+        <div class="stage-detail" id="mascotas-detail">
+            <h4>Selecciona una etapa para ver el detalle</h4>
+        </div>
+    </div>
+
+    <!-- ============== 6. CROSS-SELL ============== -->
+    <div class="pipe" id="pipe-cross">
+        <div class="pipe-head">
+            <h3>Cross-Sell / Cliente Meta</h3>
+            <span class="badge badge-cross">Automatización</span>
+        </div>
+        <p class="pipe-purpose">
+            Aquí caen automáticamente los <strong>clientes ya cerrados</strong> que se vuelven elegibles para vender otro producto (ej. cliente con previsión a 6 meses → se le ofrece nicho a los 90 días). El sistema crea la oportunidad solo, tú la trabajas.
+        </p>
+        <div class="flow" data-pipe="cross">
+            <div class="stage-chip" data-stage="0"><span class="num-dot">1</span>Cliente Elegible</div>
+            <span class="arrow">→</span>
+            <div class="stage-chip" data-stage="1"><span class="num-dot">2</span>Outreach Iniciado</div>
+            <span class="arrow">→</span>
+            <div class="stage-chip" data-stage="2"><span class="num-dot">3</span>Interés Confirmado</div>
+            <span class="arrow">→</span>
+            <div class="stage-chip" data-stage="3"><span class="num-dot">4</span>Convertido a Oportunidad</div>
+        </div>
+        <div class="stage-detail" id="cross-detail">
+            <h4>Selecciona una etapa para ver el detalle</h4>
+        </div>
+        <div class="highlight">
+            <strong>Etapa 4 = mover, no cerrar</strong>
+            <p>"Convertido a Oportunidad" significa que ya creaste la oportunidad real en el pipeline correspondiente (Previsión / Nichos / Mascotas) y ahí se trabaja como nueva venta.</p>
+        </div>
+    </div>
+
+    <!-- ============== 7. POSTVENTA & CARTERA ============== -->
+    <div class="pipe" id="pipe-postventa">
+        <div class="pipe-head">
+            <h3>Postventa & Cartera</h3>
+            <span class="badge badge-auto">Cobranza</span>
+        </div>
+        <p class="pipe-purpose">
+            Una vez cerrada una venta, la oportunidad se mueve a este pipeline para seguir las mensualidades. La etapa cambia <strong>automáticamente</strong> según los días de atraso. Tu job es contactar antes de que avance.
+        </p>
+        <div class="flow" data-pipe="postventa">
+            <div class="stage-chip" data-stage="0"><span class="num-dot">1</span>Cliente Activo</div>
+            <span class="arrow">→</span>
+            <div class="stage-chip" data-stage="1"><span class="num-dot">2</span>Recordatorio Pre-Venc.</div>
+            <span class="arrow">→</span>
+            <div class="stage-chip" data-stage="2"><span class="num-dot">3</span>Atrasado 1–15d</div>
+            <span class="arrow">→</span>
+            <div class="stage-chip" data-stage="3"><span class="num-dot">4</span>Atrasado 16–30d</div>
+            <span class="arrow">→</span>
+            <div class="stage-chip" data-stage="4"><span class="num-dot">5</span>Cartera Vencida 31–90d</div>
+            <span class="arrow">→</span>
+            <div class="stage-chip" data-stage="5"><span class="num-dot">6</span>A Cobranza Total (90d+)</div>
+        </div>
+        <div class="stage-detail" id="postventa-detail">
+            <h4>Selecciona una etapa para ver el detalle</h4>
+        </div>
+    </div>
+
+    <!-- ============== REGLAS DE ORO ============== -->
+    <h2 class="section-title" id="reglas"><span class="num">3</span>Reglas de oro</h2>
+    <p class="section-sub">Las que nunca se rompen, sin importar el caso.</p>
+
+    <div class="rules">
+        <div class="rule">
+            <div class="rule-num">1</div>
+            <h5>1 oportunidad por persona × producto</h5>
+            <p>Familia con 4 planes de previsión = 4 oportunidades, 4 contratos. NO juntar todo en una sola tarjeta.</p>
+        </div>
+        <div class="rule">
+            <div class="rule-num">2</div>
+            <h5>Pilar de prospección ≠ Pilar de cierre</h5>
+            <p>Cómo conociste al contacto (en el contacto) puede ser distinto al medio por el que cerraste la venta (en la oportunidad). Llena ambos.</p>
+        </div>
+        <div class="rule">
+            <div class="rule-num">3</div>
+            <h5>Califica antes de cotizar</h5>
+            <p>No envíes cotización sin tener: nombre completo, tipo de plan, parentesco, presupuesto aproximado. Cotizar a ciegas baja la conversión.</p>
+        </div>
+        <div class="rule">
+            <div class="rule-num">4</div>
+            <h5>Razón de pérdida obligatoria</h5>
+            <p>Si marcas "Perdido", elige la razón de la lista. Sin razón no se aprende del pipeline. No uses "Otro" salvo que de verdad no encaje.</p>
+        </div>
+        <div class="rule">
+            <div class="rule-num">5</div>
+            <h5>El bot es ayudante, no cierre</h5>
+            <p>El bot detecta interés y crea oportunidades, pero el cierre humano es tuyo. Toma la conversación apenas el contacto pida hablar con persona.</p>
+        </div>
+        <div class="rule">
+            <div class="rule-num">6</div>
+            <h5>Tono Airapí siempre</h5>
+            <p>Cálido, respetuoso, sereno. No "muerte", no "seguro", no urgencia agresiva. Sí: "previsión", "acompañar a tu familia", "planear con tranquilidad".</p>
+        </div>
+        <div class="rule">
+            <div class="rule-num">7</div>
+            <h5>Etiquetas: solo admins crean</h5>
+            <p>Si necesitas una etiqueta nueva, pídela en el grupo. No la crees por tu cuenta — se ensucia la base muy rápido.</p>
+        </div>
+        <div class="rule">
+            <div class="rule-num">8</div>
+            <h5>Contrato firmado solo en Previsión y Nichos</h5>
+            <p>Sube el PDF firmado al campo "Contrato firmado" de la oportunidad. En Servicio Inmediato no aplica.</p>
+        </div>
+    </div>
+
+    <!-- ============== CAMPOS ============== -->
+    <h2 class="section-title" id="campos"><span class="num">4</span>Campos clave por oportunidad</h2>
+    <p class="section-sub">Lo mínimo a llenar para que el reporte salga limpio.</p>
+
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>Campo</th>
+                    <th>Pipeline donde aplica</th>
+                    <th>Por qué importa</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td><strong>Pilar de Prospección</strong> (en el contacto)</td><td>Todos</td><td>De dónde llegó el lead. Define ROI por canal.</td></tr>
+                <tr><td><strong>Pilar de Cierre</strong> (en la oportunidad)</td><td>Todos</td><td>Por qué medio se cerró esta venta específica.</td></tr>
+                <tr><td><strong>Tipo de Plan</strong> (multiselect)</td><td>Previsión</td><td>Amet / Sensu / etc. Define el producto.</td></tr>
+                <tr><td><strong>Cantidad de personas cubiertas</strong></td><td>Previsión</td><td>Reemplaza el viejo "personal/pareja/familiar".</td></tr>
+                <tr><td><strong>Upgrades de Previsión</strong></td><td>Previsión</td><td>Multiselect (12 opciones) — entran como descuento en cotización.</td></tr>
+                <tr><td><strong>Categoría de Nicho</strong></td><td>Nichos</td><td>Línea Roja/Azul/Rosa/Verde/Naranja/Amarilla/Morada/Columna Morada.</td></tr>
+                <tr><td><strong>Número de Nicho</strong></td><td>Nichos</td><td>Folio del nicho (ej. 135).</td></tr>
+                <tr><td><strong>Familiar(es) ingresado(s)</strong></td><td>Nichos</td><td>Quién está en el nicho — sirve para visitas y cross-sell.</td></tr>
+                <tr><td><strong>INE titular + sustituto + beneficiario</strong></td><td>Nichos</td><td>Tres archivos. Sin esto el contrato no procede.</td></tr>
+                <tr><td><strong>Fecha de defunción / servicio / cremación</strong></td><td>Servicio Inmediato</td><td>Separadas. El aniversario se calcula desde defunción.</td></tr>
+                <tr><td><strong>Familiar responsable</strong></td><td>Servicio Inmediato</td><td>Puede no ser el titular del contrato.</td></tr>
+                <tr><td><strong>Contrato firmado</strong> (PDF)</td><td>Previsión + Nichos</td><td>Subida obligatoria al cerrar.</td></tr>
+                <tr><td><strong>Solicitud de adquisición</strong> (PDF editable)</td><td>Previsión + Nichos</td><td>La lleva el asesor antes del contrato.</td></tr>
+                <tr><td><strong>Razón de abandono</strong></td><td>Todos</td><td>Obligatoria al marcar "Perdido". Lista cerrada.</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- ============== FAQ ============== -->
+    <h2 class="section-title" id="faq"><span class="num">5</span>Preguntas frecuentes</h2>
+
+    <div class="faq-item">
+        <div class="faq-q">¿Y si la familia compra previsión y nicho al mismo tiempo? <span class="toggle">+</span></div>
+        <div class="faq-a"><p>Dos oportunidades: una en Previsión, otra en Nichos. Misma persona como contacto. Cada una con su propio contrato y cotización. No las juntes.</p></div>
+    </div>
+    <div class="faq-item">
+        <div class="faq-q">El bot ya respondió al lead. ¿Qué hago yo? <span class="toggle">+</span></div>
+        <div class="faq-a"><p>Revisa la conversación, valida que la oportunidad esté en el pipeline correcto, y toma el caso desde donde el bot lo dejó. Si el bot detectó interés en previsión y creó la oportunidad, sigue tú con la calificación humana.</p></div>
+    </div>
+    <div class="faq-item">
+        <div class="faq-q">El cliente quiere planes Amet y Sensu en el mismo paquete. ¿Una o dos oportunidades? <span class="toggle">+</span></div>
+        <div class="faq-a"><p>Una oportunidad por persona × producto. Si son dos productos para una sola persona, son dos oportunidades. Si es un producto para dos personas, son dos oportunidades. La regla siempre se respeta.</p></div>
+    </div>
+    <div class="faq-item">
+        <div class="faq-q">¿Cómo se ve cuándo el sistema crea automáticamente una oportunidad de cross-sell? <span class="toggle">+</span></div>
+        <div class="faq-a"><p>Aparece en el pipeline "Cross-Sell / Cliente Meta" en etapa "Cliente Elegible". Te llega notificación. Tú haces el outreach inicial (mover a etapa 2) y trabajas hacia "Convertido a Oportunidad" — momento en el que abres la oportunidad real en el pipeline del producto.</p></div>
+    </div>
+    <div class="faq-item">
+        <div class="faq-q">¿Qué pasa si paso una oportunidad a "Perdido" sin razón? <span class="toggle">+</span></div>
+        <div class="faq-a"><p>El sistema te bloqueará — el campo "Razón de abandono" es obligatorio en Perdido. Las opciones son: Mudanza, Ya tenían otro plan, Compró en competencia, Por presupuesto / muy caro, Otro.</p></div>
+    </div>
+    <div class="faq-item">
+        <div class="faq-q">¿Se pueden editar los precios en la cotización? <span class="toggle">+</span></div>
+        <div class="faq-a"><p>No. Los precios y montos están bloqueados para edición libre — fueron históricamente la principal fuente de errores de captura. Si necesitas un descuento o ajuste, usa el campo "Descuento" del cotizador (eso es donde se reflejan los upgrades como ahorro).</p></div>
+    </div>
+    <div class="faq-item">
+        <div class="faq-q">¿Cómo descargo la app móvil? <span class="toggle">+</span></div>
+        <div class="faq-a"><p>Busca "LeadConnector" en App Store (iPhone) o Play Store (Android). Los enlaces directos están al inicio de este manual. Inicia sesión con el mismo correo y contraseña del CRM web.</p></div>
+    </div>
+    <div class="faq-item">
+        <div class="faq-q">¿Qué hago si un lead llega por WhatsApp sin pasar por el bot? <span class="toggle">+</span></div>
+        <div class="faq-a"><p>Crea el contacto manualmente con su número, márcalo con Pilar de Prospección "Redes sociales" o lo que aplique, y abre la oportunidad en "Contacto Inicial → Nuevo Lead". De ahí lo trabajas como cualquier otro.</p></div>
+    </div>
+
+</main>
+
+<footer>
+    <p><strong>Manual CRM Airapí</strong> · v1.0 · Mayo 2026</p>
+    <p style="margin-top:6px; font-size:0.78rem;">Construido por <strong>ALTURA</strong>. Para reportar ajustes o errores, escribe en el chat de CRM Altura.</p>
+</footer>
+
+<button class="top-btn" id="topBtn" aria-label="Volver arriba">↑</button>
+
+<script>
+// ===== STAGE DATA =====
+const stageData = {
+  contacto: [
+    {
+      title: "Nuevo Lead",
+      goal: "Recibir el lead y registrar de dónde vino. Aún sin contacto humano.",
+      criteria: "Lead recién creado. Pilar de Prospección capturado. Aún sin respuesta del lead.",
+      action: ["Validar que el contacto tenga teléfono y nombre.", "Confirmar el Pilar de Prospección (Stand, Formulario web, Redes, etc.).", "Asignar al asesor responsable (si aplica)."],
+      next: "Pasa a Contactado en cuanto haces el primer intento de contacto (llamada, WA, mail).",
+      timing: "Idealmente en menos de 30 min desde que entra."
+    },
+    {
+      title: "Contactado",
+      goal: "Hubo intento de contacto, pero aún no se sabe qué quiere.",
+      criteria: "Mensaje enviado o llamada hecha. Sin respuesta confirmada o respuesta muy genérica.",
+      action: ["Llamada 1 + WhatsApp 1.", "Si no contesta a las 24h, segunda llamada.", "Documentar cada intento en Notas."],
+      next: "A Prospecto cuando hay conversación real y entiendes qué busca.",
+      timing: "Máx 48h en esta etapa antes de re-evaluar."
+    },
+    {
+      title: "Prospecto",
+      goal: "Ya hablaste con el lead, sabes qué quiere (previsión, nicho, inmediato, mascotas).",
+      criteria: "Contacto confirmó interés en algún producto. Tienes datos para calificar.",
+      action: ["Termina de calificar (presupuesto, parentesco, urgencia).", "Define el pipeline destino correcto.", "Crea la oportunidad nueva en ese pipeline (Previsión / Nichos / Inmediato / Mascotas)."],
+      next: "Mueve la oportunidad al pipeline correspondiente. Esta queda como Cliente o Cotizado solo si por alguna razón el lead cierra antes de migrar.",
+      timing: "1–3 días."
+    },
+    {
+      title: "Cotizado",
+      goal: "(Solo si el lead cerró rápido sin moverse a otro pipeline) Cotización enviada desde Contacto Inicial.",
+      criteria: "Cotización formal enviada al lead.",
+      action: ["Confirmar que recibió.", "Agendar seguimiento."],
+      next: "Cliente si acepta. Si entra a negociación, mueve al pipeline correcto.",
+      timing: "Idealmente esta etapa no debería usarse — califica primero y mueve al pipeline real."
+    },
+    {
+      title: "Cliente",
+      goal: "Cierre directo desde Contacto Inicial (excepción).",
+      criteria: "Pago/firma realizada, contrato subido.",
+      action: ["Subir Contrato Firmado.", "Marcar como Ganado.", "Crear oportunidad Postventa correspondiente."],
+      next: "El sistema mueve a Postventa & Cartera automáticamente.",
+      timing: "—"
+    }
+  ],
+  prevision: [
+    {
+      title: "Nuevo Lead",
+      goal: "Lead identificado como interesado en previsión.",
+      criteria: "Contacto manifestó interés en plan funerario a futuro.",
+      action: ["Saludar con tono cálido.", "Recolectar nombres y parentescos a cubrir."],
+      next: "Calificado cuando confirmas datos básicos y ganas de avanzar.",
+      timing: "Mismo día."
+    },
+    {
+      title: "Calificado",
+      goal: "Sabes a quién cubrirá el plan, presupuesto aproximado y timing.",
+      criteria: "Tienes: nombre titular, personas a cubrir, rango de mensualidad que considera.",
+      action: ["Validar que sea decisor (o quién decide).", "Confirmar que entiende que es plan a futuro, no inmediato."],
+      next: "Presentación cuando agendas la junta de explicación de planes.",
+      timing: "1–3 días."
+    },
+    {
+      title: "Presentación",
+      goal: "Reunión / llamada donde explicas planes, beneficios, upgrades.",
+      criteria: "Reunión agendada o realizada con material de presentación.",
+      action: ["Llevar material visual.", "Explicar Amet, Sensu y diferencias.", "Explicar mensualidades sin intereses."],
+      next: "Cita = visita física al campus si quiere conocer instalaciones.",
+      timing: "1–2 sesiones."
+    },
+    {
+      title: "Cita",
+      goal: "Visita en sitio (capilla, salas, instalaciones).",
+      criteria: "Cita agendada y confirmada con recordatorios.",
+      action: ["Confirmar el día anterior.", "Tener recorrido planeado.", "Llevar cotización preliminar para entregar al final."],
+      next: "Cotización Enviada cuando le mandas la cotización formal por escrito.",
+      timing: "1 día."
+    },
+    {
+      title: "Cotización Enviada",
+      goal: "Cotización formal en sus manos. Empieza decisión.",
+      criteria: "PDF / link de cotización enviado.",
+      action: ["Confirmar recepción.", "Agendar seguimiento a 48–72h.", "Documentar objeciones si surgen."],
+      next: "Negociación si pide ajustes / hace preguntas / pide tiempo.",
+      timing: "2–7 días."
+    },
+    {
+      title: "Negociación de Cotización",
+      goal: "Resolver objeciones, ajustar plan, cerrar términos.",
+      criteria: "Cliente pidió ajustes, descuentos, cambios al plan, o necesita más tiempo.",
+      action: ["Responder objeciones con tono sereno.", "Ofrecer upgrades como descuento (no como costo extra).", "Validar internamente cualquier ajuste antes de prometer."],
+      next: "Cliente Cerrado cuando paga/firma. Perdido con razón si decide no avanzar.",
+      timing: "1–3 semanas (ciclo promedio Airapí)."
+    },
+    {
+      title: "Cliente Cerrado",
+      goal: "Venta ganada.",
+      criteria: "Pago de enganche realizado, contrato firmado y subido.",
+      action: ["Subir Contrato Firmado.", "Subir Solicitud de Adquisición.", "Llenar fecha primer pago.", "Marcar como Ganado."],
+      next: "Sistema crea oportunidad en Postventa & Cartera automáticamente. A los X días/meses, sistema crea oportunidad Cross-Sell.",
+      timing: "—"
+    }
+  ],
+  nichos: [
+    {
+      title: "Trigger Recibido",
+      goal: "Sistema detectó elegibilidad: post-velación o cliente con previsión >90 días.",
+      criteria: "Tag automático aplicado o creación manual desde caso post-velación.",
+      action: ["Validar el trigger.", "Asignar asesor."],
+      next: "Calificado cuando confirmas interés real en nicho.",
+      timing: "Mismo día / 24h."
+    },
+    {
+      title: "Calificado",
+      goal: "Familia confirmó interés en adquirir un nicho.",
+      criteria: "Conversación con familiar responsable. Sabes qué línea/categoría les interesa.",
+      action: ["Explicar capacidades por línea (Roja/Azul/Rosa = 4, Verde/Naranja/Amarilla = 8, Morada = 1, Columna Morada = 2).", "Validar familiar(es) que se ingresarían."],
+      next: "Visita a Nichos cuando agendas recorrido.",
+      timing: "1–3 días."
+    },
+    {
+      title: "Visita a Nichos",
+      goal: "Recorrido en sitio para que vean ubicaciones disponibles.",
+      criteria: "Cita confirmada en Capilla o Mausoleo.",
+      action: ["Mostrar opciones por línea.", "Anotar preferencia de ubicación específica.", "Capturar Categoría de Nicho y Número de Nicho preliminar."],
+      next: "Cotizado cuando envías propuesta formal.",
+      timing: "1 día."
+    },
+    {
+      title: "Cotizado",
+      goal: "Cotización formal enviada con ubicación específica.",
+      criteria: "PDF / link enviado.",
+      action: ["Confirmar recepción.", "Recolectar INEs (titular, sustituto, beneficiario).", "Seguimiento a 48–72h."],
+      next: "Cliente Cerrado al pago.",
+      timing: "1–2 semanas."
+    },
+    {
+      title: "Cliente Cerrado",
+      goal: "Nicho asignado y pagado.",
+      criteria: "Pago realizado, 3 INEs subidas, contrato firmado.",
+      action: ["Subir Contrato Firmado.", "Subir las 3 INEs.", "Llenar Familiar(es) ingresado(s).", "Capturar ubicación final y número de nicho."],
+      next: "Postventa si hubo financiamiento. Cliente Meta para futuras visitas o cross-sell adicional.",
+      timing: "—"
+    }
+  ],
+  inmediato: [
+    {
+      title: "Lead Urgente / Servicio Activo",
+      goal: "Familia con fallecimiento ya ocurrido. Atención inmediata.",
+      criteria: "Familia contacta por servicio funerario inmediato.",
+      action: ["Tono cálido y respetuoso desde la primera línea.", "Asignar asesor de turno YA.", "Pedir: nombre del finado, fecha defunción, lugar actual, familiar responsable."],
+      next: "Cotizado Inmediato cuando das opciones y ellos eligen tipo de servicio.",
+      timing: "Minutos a horas."
+    },
+    {
+      title: "Cotizado Inmediato",
+      goal: "Familia eligió tipo de servicio. Procede contratación.",
+      criteria: "Cotización aceptada verbalmente o por escrito.",
+      action: ["Recolectar documentos: acta defunción, CSF, INE responsable, autorización embalsamamiento, formato pertenencias, ropa.", "Coordinar con sala / cremación.", "Confirmar fecha de servicio y de cremación."],
+      next: "Servicio Cerrado al concluir el servicio.",
+      timing: "Horas a 1–2 días."
+    },
+    {
+      title: "Servicio Cerrado",
+      goal: "Servicio realizado.",
+      criteria: "Servicio completado. Familia notificada.",
+      action: ["Cerrar oportunidad como Ganado.", "Aplicar trigger para potencial venta de nicho post-velación (entra al pipeline Nichos).", "Calendar recordatorio aniversario al año desde fecha defunción."],
+      next: "Trigger automático genera oportunidad en pipeline Nichos.",
+      timing: "—"
+    }
+  ],
+  mascotas: [
+    {
+      title: "Nuevo Lead",
+      goal: "Persona buscando crematorio para mascota.",
+      criteria: "Contacto inicial recibido por cualquier canal.",
+      action: ["Tono cálido (la pérdida de mascota duele igual).", "Confirmar tipo de mascota, peso, tipo de servicio (individual/comunitario)."],
+      next: "Cotizado al enviar precios.",
+      timing: "Mismo día."
+    },
+    {
+      title: "Cotizado",
+      goal: "Cliente recibió precios y opciones.",
+      criteria: "Cotización enviada.",
+      action: ["Confirmar recepción.", "Agendar entrega o recolección de la mascota."],
+      next: "Cliente Cerrado al realizar el servicio.",
+      timing: "1–3 días."
+    },
+    {
+      title: "Cliente Cerrado",
+      goal: "Servicio realizado.",
+      criteria: "Crematorio realizado, urna entregada.",
+      action: ["Cerrar oportunidad como Ganado.", "Considerar para Cross-Sell futuro (relicarios, accesorios)."],
+      next: "—",
+      timing: "—"
+    }
+  ],
+  cross: [
+    {
+      title: "Cliente Elegible",
+      goal: "Sistema identificó cliente con potencial cross-sell (post-90 días, etc.).",
+      criteria: "Oportunidad creada automáticamente al cumplirse el plazo del producto original.",
+      action: ["Revisar histórico del cliente.", "Identificar qué producto adicional encaja (nicho, mascotas, otro plan)."],
+      next: "Outreach Iniciado al hacer primer contacto.",
+      timing: "Mismo día / 48h tras notificación."
+    },
+    {
+      title: "Outreach Iniciado",
+      goal: "Primer mensaje / llamada al cliente.",
+      criteria: "Mensaje enviado o llamada hecha.",
+      action: ["Mensaje cálido referenciando relación previa.", "Sin presión de venta — abrir conversación."],
+      next: "Interés Confirmado si responde positivamente.",
+      timing: "1–7 días."
+    },
+    {
+      title: "Interés Confirmado",
+      goal: "Cliente expresó interés en el producto adicional.",
+      criteria: "Confirmó verbal o por escrito que quiere conocer más.",
+      action: ["Calificar como cualquier lead nuevo.", "Recolectar datos para abrir oportunidad real."],
+      next: "Convertido a Oportunidad cuando creas la oportunidad real en el pipeline correspondiente.",
+      timing: "1–2 semanas."
+    },
+    {
+      title: "Convertido a Oportunidad",
+      goal: "Oportunidad real creada en pipeline destino.",
+      criteria: "Oportunidad nueva existe en Previsión / Nichos / Mascotas.",
+      action: ["Marcar esta etapa como completada.", "Trabajar la oportunidad real en su pipeline."],
+      next: "—",
+      timing: "—"
+    }
+  ],
+  postventa: [
+    {
+      title: "Cliente Activo (al día)",
+      goal: "Cliente pagando puntualmente.",
+      criteria: "Sin atraso. Próximo pago dentro del rango normal.",
+      action: ["Sin acción manual requerida.", "Recordatorios automáticos los manda el sistema."],
+      next: "Recordatorio Pre-Vencimiento (automático) cuando se acerque la fecha.",
+      timing: "Continuo."
+    },
+    {
+      title: "Recordatorio Pre-Vencimiento",
+      goal: "Faltan días para mensualidad. Sistema envía recordatorio.",
+      criteria: "Auto-trigger 5–7 días antes del vencimiento.",
+      action: ["Sin acción manual a menos que cliente responda con duda."],
+      next: "Cliente Activo si paga. Atrasado 1–15d si no paga al vencimiento.",
+      timing: "Automático."
+    },
+    {
+      title: "Atrasado 1–15d",
+      goal: "Primer atraso. Recordatorio amistoso.",
+      criteria: "1 a 15 días de atraso.",
+      action: ["WhatsApp recordatorio cálido.", "Llamada si no responde a los 7 días."],
+      next: "Cliente Activo si paga. Atrasado 16–30d si sigue sin pagar.",
+      timing: "Manual + automático."
+    },
+    {
+      title: "Atrasado 16–30d",
+      goal: "Atraso intermedio. Empieza riesgo.",
+      criteria: "16 a 30 días de atraso.",
+      action: ["Llamada directa.", "Ofrecer regularización / reactivación.", "Documentar razón del atraso."],
+      next: "Cliente Activo si paga. Cartera Vencida 31–90d si no.",
+      timing: "Acción manual semanal."
+    },
+    {
+      title: "Cartera Vencida 31–90d",
+      goal: "Riesgo alto. Acción intensiva.",
+      criteria: "31 a 90 días de atraso.",
+      action: ["Contacto múltiple.", "Carta formal si aplica.", "Reportar a admin / Adri."],
+      next: "Cliente Activo si regulariza. A Cobranza Total si llega a 90+.",
+      timing: "Acción semanal."
+    },
+    {
+      title: "A Cobranza Total (90d+)",
+      goal: "Cobranza formal / cancelación.",
+      criteria: "90+ días de atraso.",
+      action: ["Reportar a admin.", "Procesar baja o cobranza según política."],
+      next: "—",
+      timing: "—"
+    }
+  ]
+};
+
+// ===== STAGE INTERACTION =====
+function renderStage(pipeKey, stageIdx) {
+    const data = stageData[pipeKey][stageIdx];
+    const target = document.getElementById(pipeKey + '-detail');
+    if (!data || !target) return;
+    target.classList.add('active');
+    target.innerHTML = `
+        <h4>Etapa ${stageIdx+1}: ${data.title}</h4>
+        <div class="row"><div class="lbl">Objetivo</div><div class="val">${data.goal}</div></div>
+        <div class="row"><div class="lbl">Cuándo entra una oportunidad aquí</div><div class="val">${data.criteria}</div></div>
+        <div class="row"><div class="lbl">Acciones del asesor</div><div class="val"><ul>${data.action.map(a=>`<li>${a}</li>`).join('')}</ul></div></div>
+        <div class="row"><div class="lbl">Cuándo mover a la siguiente etapa</div><div class="val">${data.next}</div></div>
+        <div class="row"><div class="lbl">Tiempo esperado</div><div class="val">${data.timing}</div></div>
+    `;
+}
+
+document.querySelectorAll('.flow').forEach(flow => {
+    const pipeKey = flow.getAttribute('data-pipe');
+    flow.querySelectorAll('.stage-chip').forEach(chip => {
+        chip.addEventListener('click', () => {
+            flow.querySelectorAll('.stage-chip').forEach(c => c.classList.remove('active'));
+            chip.classList.add('active');
+            const idx = parseInt(chip.getAttribute('data-stage'), 10);
+            renderStage(pipeKey, idx);
+        });
+    });
+    // auto-open first stage on load for guidance
+    const first = flow.querySelector('.stage-chip');
+    if (first) {
+        first.classList.add('active');
+        renderStage(pipeKey, 0);
+    }
+});
+
+// ===== FAQ =====
+document.querySelectorAll('.faq-item').forEach(item => {
+    item.querySelector('.faq-q').addEventListener('click', () => {
+        item.classList.toggle('open');
+    });
+});
+
+// ===== TOP BUTTON =====
+const topBtn = document.getElementById('topBtn');
+window.addEventListener('scroll', () => {
+    if (window.scrollY > 400) topBtn.classList.add('visible');
+    else topBtn.classList.remove('visible');
+});
+topBtn.addEventListener('click', () => window.scrollTo({top:0, behavior:'smooth'}));
+</script>
+
+</body>
+</html>
